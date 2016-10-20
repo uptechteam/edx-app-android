@@ -28,7 +28,7 @@ import org.edx.mobile.core.IEdxEnvironment;
 import org.edx.mobile.databinding.DrawerNavigationBinding;
 import org.edx.mobile.event.AccountDataLoadedEvent;
 import org.edx.mobile.event.ProfilePhotoUpdatedEvent;
-import org.edx.mobile.http.CallTrigger;
+import org.edx.mobile.http.notifications.SnackbarErrorNotification;
 import org.edx.mobile.logger.Logger;
 import org.edx.mobile.model.api.ProfileModel;
 import org.edx.mobile.module.analytics.ISegment;
@@ -42,7 +42,6 @@ import org.edx.mobile.user.UserService;
 import org.edx.mobile.util.Config;
 import org.edx.mobile.util.EmailUtil;
 import org.edx.mobile.util.ResourceUtil;
-import org.edx.mobile.view.common.TaskProgressCallback;
 import org.edx.mobile.view.my_videos.MyVideosActivity;
 
 import java.util.HashMap;
@@ -93,8 +92,13 @@ public class NavigationFragment extends BaseFragment {
             getAccountCall.enqueue(new UserAPI.AccountDataUpdatedCallback(
                     getActivity(),
                     profile.username,
-                    CallTrigger.LOADING_UNCACHED,
-                    (TaskProgressCallback) null)); // Disable global loading indicator
+                    null, // Disable global loading indicator
+                    new SnackbarErrorNotification(
+                            /* Since this Fragment's view hasn't been
+                             * initialized yet, we'll use the Activity's content
+                             * view to give to the Snackbar.
+                             */
+                            getActivity().findViewById(android.R.id.content))));
         }
         EventBus.getDefault().register(this);
     }

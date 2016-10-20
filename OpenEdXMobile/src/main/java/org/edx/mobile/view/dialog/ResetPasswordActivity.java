@@ -14,7 +14,6 @@ import org.edx.mobile.R;
 import org.edx.mobile.authentication.LoginService;
 import org.edx.mobile.base.BaseAppActivity;
 import org.edx.mobile.databinding.ActivityResetPasswordBinding;
-import org.edx.mobile.http.CallTrigger;
 import org.edx.mobile.http.ErrorHandlingCallback;
 import org.edx.mobile.model.api.ResetPasswordResponse;
 import org.edx.mobile.util.InputValidationUtil;
@@ -85,7 +84,7 @@ public class ResetPasswordActivity extends BaseAppActivity {
         binding.emailEdit.setEnabled(false);
         resetPasswordCall = loginService.resetPassword(email);
         resetPasswordCall.enqueue(new ErrorHandlingCallback<ResetPasswordResponse>(
-                this, CallTrigger.USER_ACTION) {
+                this) {
             @Override
             protected void onResponse(@NonNull final ResetPasswordResponse result) {
                 if (result.isSuccess()) {

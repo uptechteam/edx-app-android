@@ -65,9 +65,15 @@ public class NewVersionBroadcastInterceptor implements Interceptor {
 
         final boolean isUnsupported = response.code() == HttpStatus.UPGRADE_REQUIRED;
 
-        // Pass these properties to the event broadcaster to validate and post if not
-        // already posted.
-        NewVersionAvailableEvent.post(appLatestVersion, lastSupportedDate, isUnsupported);
+        /* If the server is returning an error due to the app being no longer supported, then
+         * let the response error handler deal with it, since it may want to overlay the error
+         * message over the content area.
+         */
+        if (!isUnsupported) {
+            // Pass these properties to the event broadcaster to validate and post if not
+            // already posted.
+            NewVersionAvailableEvent.post(appLatestVersion, lastSupportedDate, isUnsupported);
+        }
 
         return response;
     }
