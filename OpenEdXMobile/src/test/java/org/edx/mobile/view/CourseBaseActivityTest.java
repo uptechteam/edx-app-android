@@ -13,7 +13,7 @@ import android.widget.ProgressBar;
 import com.joanzapata.iconify.IconDrawable;
 
 import org.edx.mobile.R;
-import org.edx.mobile.http.OkHttpUtil;
+import org.edx.mobile.http.util.OkHttpUtil;
 import org.edx.mobile.model.api.EnrolledCoursesResponse;
 import org.edx.mobile.model.course.CourseComponent;
 import org.junit.Test;
