@@ -14,7 +14,6 @@ import org.edx.mobile.module.notification.NotificationDelegate;
 import org.edx.mobile.module.prefs.LoginPrefs;
 import org.edx.mobile.module.prefs.UserPrefs;
 import org.edx.mobile.module.storage.IStorage;
-import org.edx.mobile.services.ServiceManager;
 import org.edx.mobile.util.Config;
 import org.edx.mobile.view.Router;
 
@@ -50,9 +49,6 @@ public class EdxEnvironment implements IEdxEnvironment {
 
     @Inject
     Config config;
-
-    @Inject
-    ServiceManager serviceManager;
 
     @Inject
     EventBus eventBus;
@@ -100,11 +96,6 @@ public class EdxEnvironment implements IEdxEnvironment {
     @Override
     public IStorage getStorage() {
         return storage;
-    }
-
-    @Override
-    public ServiceManager getServiceManager() {
-        return serviceManager;
     }
 
     public EventBus getEventBus() {

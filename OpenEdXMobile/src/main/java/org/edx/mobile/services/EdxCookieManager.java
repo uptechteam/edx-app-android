@@ -2,20 +2,23 @@ package org.edx.mobile.services;
 
 import android.content.Context;
 import android.os.Build;
-import android.webkit.CookieManager;
+import android.support.annotation.NonNull;
 import android.webkit.CookieSyncManager;
 
-import org.edx.mobile.base.MainApplication;
+import com.google.inject.Inject;
+
+import org.edx.mobile.authentication.LoginService;
 import org.edx.mobile.event.SessionIdRefreshEvent;
+import org.edx.mobile.http.callback.Callback;
 import org.edx.mobile.logger.Logger;
-import org.edx.mobile.task.GetSessesionExchangeCookieTask;
 
 import java.io.File;
-import java.net.HttpCookie;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import de.greenrobot.event.EventBus;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import roboguice.RoboGuice;
 
 /**
  *  A central place for course data model transformation
@@ -33,11 +36,16 @@ public class EdxCookieManager {
 
     private static EdxCookieManager instance;
 
-    private GetSessesionExchangeCookieTask task;
+    @Inject
+    private LoginService loginService;
 
-    public static synchronized EdxCookieManager getSharedInstance(){
-        if ( instance == null )
+    private Call<RequestBody> loginCall;
+
+    public static synchronized EdxCookieManager getSharedInstance(@NonNull final Context context) {
+        if ( instance == null ) {
             instance = new EdxCookieManager();
+            RoboGuice.getInjector(context).injectMembers(instance);
+        }
         return instance;
     }
 
@@ -56,34 +64,23 @@ public class EdxCookieManager {
     }
 
     public synchronized  void tryToRefreshSessionCookie( ){
-        if ( task == null || task.isCancelled()  ) {
-            task =new GetSessesionExchangeCookieTask(MainApplication.instance()) {
+        if (loginCall == null || loginCall.isCanceled()) {
+            loginCall = loginService.login();
+            loginCall.enqueue(new Callback<RequestBody>() {
                 @Override
-                public void onSuccess(List<HttpCookie> result) {
-                    if (result == null || result.isEmpty()) {
-                        logger.debug("result is empty");
-                        EventBus.getDefault().post(new SessionIdRefreshEvent(false));
-                        return;
-                    }
-
-                    final CookieManager cookieManager = CookieManager.getInstance();
-                    clearWebWiewCookie(context);
-                    for (HttpCookie cookie : result) {
-                        cookieManager.setCookie(environment.getConfig().getApiHostURL(), cookie.toString());
-                    }
+                protected void onResponse(@NonNull final RequestBody responseBody) {
                     authSessionCookieExpiration = System.currentTimeMillis() + FRESHNESS_INTERVAL;
                     EventBus.getDefault().post(new SessionIdRefreshEvent(true));
-                    task = null;
+                    loginCall = null;
                 }
 
                 @Override
-                public void onException(Exception ex) {
-                    super.onException(ex);
+                protected void onFailure(@NonNull Throwable error) {
+                    super.onFailure(error);
                     EventBus.getDefault().post(new SessionIdRefreshEvent(false));
-                    task = null;
+                    loginCall = null;
                 }
-            };
-            task.execute();
+            });
         }
     }
 

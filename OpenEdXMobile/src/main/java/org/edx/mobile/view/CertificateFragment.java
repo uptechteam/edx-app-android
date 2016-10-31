@@ -119,7 +119,7 @@ public class CertificateFragment extends BaseFragment {
         super.onActivityCreated(savedInstanceState);
 
         // Clear cookies before loading so that social sharing buttons are not displayed inside web view
-        EdxCookieManager.getSharedInstance().clearWebWiewCookie(getActivity());
+        EdxCookieManager.getSharedInstance(getContext()).clearWebWiewCookie(getContext());
 
         webview.loadUrl(courseData.getCertificateURL());
     }

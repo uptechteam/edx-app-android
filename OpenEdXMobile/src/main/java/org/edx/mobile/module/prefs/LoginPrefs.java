@@ -61,7 +61,8 @@ public class LoginPrefs {
         setSubtitleLanguage(null);
         pref.put(PrefManager.Key.PROFILE_JSON, null);
         pref.put(PrefManager.Key.AUTH_JSON, null);
-        EdxCookieManager.getSharedInstance().clearWebWiewCookie(MainApplication.instance());
+        EdxCookieManager.getSharedInstance(MainApplication.instance())
+                .clearWebWiewCookie(MainApplication.instance());
     }
 
     public void saveSocialLoginToken(@NonNull String accessToken, @NonNull String backend) {

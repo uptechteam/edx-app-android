@@ -1,6 +1,10 @@
 package org.edx.mobile.http.serialization;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
+
+import com.google.gson.Gson;
+import com.google.inject.Inject;
 
 import org.edx.mobile.http.HttpResponseStatusException;
 
@@ -9,6 +13,7 @@ import java.io.IOException;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
+import roboguice.RoboGuice;
 
 /**
  * Abstract implementation of OkHttp's
@@ -18,13 +23,26 @@ import okhttp3.Response;
  * redirecting all responses with error codes to the
  * failure callback method.
  */
-public abstract class OkCallback implements Callback {
+public abstract class OkCallback<T> implements Callback {
+    @Inject
+    private Gson gson;
+
+    @NonNull
+    private final Class<T> responseBodyClass;
+
+    protected OkCallback(@NonNull final Context context,
+                         @NonNull final Class<T> responseBodyClass) {
+        RoboGuice.getInjector(context).injectMembers(this);
+        this.responseBodyClass = responseBodyClass;
+    }
+
     /**
      * Callback method for a successful HTTP response.
      *
-     * @param response The response.
+     * @param responseBody The response body, converted to an instance of it's associated Java
+     *                     class.
      */
-    protected abstract void onResponse(@NonNull final Response response);
+    protected abstract void onResponse(@NonNull final T responseBody);
 
     /**
      * Callback method for when the HTTP response was not received successfully, whether due to
@@ -40,11 +58,11 @@ public abstract class OkCallback implements Callback {
      * definition provides extra information that's not needed by most individual callback
      * implementations, and is also invoked when HTTP error status codes are encountered (forcing
      * the implementation to manually check for success in each case). Therefore this implementation
-     * only delegates to {@link #onResponse(Response)} in the case where it receives a successful
-     * HTTP status code, and to {@link #onFailure(Throwable)} otherwise, passing an instance of
+     * only delegates to {@link #onResponse(T)} in the case where it receives a successful HTTP
+     * status code, and to {@link #onFailure(Throwable)} otherwise, passing an instance of
      * {@link HttpResponseStatusException} with the relevant error status code. This method is
      * declared as final, as subclasses are meant to be implementing the abstract
-     * {@link #onResponse(Response)} method instead of this one.
+     * {@link #onResponse(T)} method instead of this one.
      *
      * @param call The Call object that was used to enqueue the request.
      * @param response The HTTP response data.
@@ -52,7 +70,14 @@ public abstract class OkCallback implements Callback {
     @Override
     public final void onResponse(@NonNull final Call call, @NonNull final Response response) {
         if (response.isSuccessful()) {
-            onResponse(response);
+            final String responseBodyString;
+            try {
+                responseBodyString = response.body().string();
+            } catch (IOException error) {
+                onFailure(error);
+                return;
+            }
+            onResponse(gson.fromJson(responseBodyString, responseBodyClass));
         } else {
             onFailure(new HttpResponseStatusException(response));
         }
@@ -63,8 +88,8 @@ public abstract class OkCallback implements Callback {
      * whether due to cancellation, a connectivity problem, or a timeout. This method definition
      * provides extra information that's not needed by most individual callback implementations, so
      * this implementation only delegates to {@link #onFailure(Throwable)}. This method is declared
-     * as final, as subclasses are meant to be implementing the abstract
-     * {@link #onResponse(Response)} method instead of this one.
+     * as final, as subclasses are meant to be implementing the abstract {@link #onResponse(T)}
+     * method instead of this one.
      *
      * @param call The Call object that was used to enqueue the request.
      * @param error The cause of the request being interrupted.

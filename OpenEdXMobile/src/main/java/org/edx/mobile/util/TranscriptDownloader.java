@@ -2,30 +2,37 @@ package org.edx.mobile.util;
 
 import android.content.Context;
 
-import com.google.inject.Inject;
-
+import org.edx.mobile.http.HttpResponseStatusException;
+import org.edx.mobile.http.util.OkHttpUtil;
 import org.edx.mobile.logger.Logger;
-import org.edx.mobile.services.ServiceManager;
 
-import roboguice.RoboGuice;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public abstract class TranscriptDownloader implements Runnable {
 
     private String srtUrl;
-    @Inject
-    ServiceManager localApi;
+    private OkHttpClient okHttpClient;
     private final Logger logger = new Logger(TranscriptDownloader.class.getName());
 
     public TranscriptDownloader(Context context, String url) {
         this.srtUrl = url;
-        RoboGuice.getInjector(context).injectMembers(this);
+        okHttpClient = OkHttpUtil.getOAuthBasedClientWithOfflineCache(context);
     }
 
     @Override
     public void run() {
         try {
-            String response = localApi.downloadTranscript(srtUrl);
-            onDownloadComplete(response);
+            final Response response = okHttpClient.newCall(new Request.Builder()
+                    .url(srtUrl)
+                    .get()
+                    .build())
+                    .execute();
+            if (!response.isSuccessful()) {
+                throw new HttpResponseStatusException(response);
+            }
+            onDownloadComplete(response.body().string());
         } catch (Exception localException) {
             handle(localException);
             logger.error(localException);

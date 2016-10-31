@@ -4,6 +4,9 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.google.gson.Gson;
+import com.google.inject.Inject;
+
 import org.edx.mobile.http.HttpResponseStatusException;
 import org.edx.mobile.util.images.ErrorUtils;
 import org.edx.mobile.view.common.TaskMessageCallback;
@@ -24,12 +27,15 @@ import roboguice.RoboGuice;
  * parameters, and redirecting all responses with error codes to the
  * failure callback method.
  */
-public abstract class ErrorHandlingOkCallback implements Callback {
+public abstract class ErrorHandlingOkCallback<T> implements Callback {
     /**
      * A Context for resolving the error message strings.
      */
     @NonNull
     private final Context context;
+
+    @NonNull
+    private final Class<T> responseBodyClass;
 
     /**
      * The trigger for initiating the call. This is used to determine the type of error message to
@@ -50,6 +56,9 @@ public abstract class ErrorHandlingOkCallback implements Callback {
     @Nullable
     private final TaskMessageCallback messageCallback;
 
+    @Inject
+    private Gson gson;
+
     /**
      * Create a new instance of this class.
      *
@@ -64,8 +73,9 @@ public abstract class ErrorHandlingOkCallback implements Callback {
      *                    error message to deliver.
      */
     public ErrorHandlingOkCallback(@NonNull final Context context,
+                                   @NonNull final Class<T> responseBodyClass,
                                    @NonNull final CallTrigger callTrigger) {
-        this(context, callTrigger,
+        this(context, responseBodyClass, callTrigger,
                 context instanceof TaskProgressCallback ? (TaskProgressCallback) context : null,
                 context instanceof TaskMessageCallback ? (TaskMessageCallback) context : null);
     }
@@ -86,29 +96,31 @@ public abstract class ErrorHandlingOkCallback implements Callback {
      *                         thus invokes that start callback immediately as well.
      */
     public ErrorHandlingOkCallback(@NonNull final Context context,
+                                   @NonNull final Class<T> responseBodyClass,
                                    @NonNull final CallTrigger callTrigger,
                                    @Nullable final TaskProgressCallback progressCallback) {
-        this(context, callTrigger,
+        this(context, responseBodyClass, callTrigger,
                 progressCallback,
                 context instanceof TaskMessageCallback ? (TaskMessageCallback) context : null);
     }
 
     /**
      * Create a new instance of this class.
-     *
-     * @param context A Context for resolving the error message strings. Note that for convenience,
+     *  @param context A Context for resolving the error message strings. Note that for convenience,
      *                this will be checked to determine whether it's implementing the
      *                {@link TaskProgressCallback} interface, and will be registered as such if so.
      *                If this is not the desired outcome, then the other constructor should be used
      *                that takes this callback parameter, and it should be explicitly set as null.
+     * @param responseBodyClass
      * @param callTrigger The trigger for initiating the call. This is used to determine the type of
      *                    error message to deliver.
      * @param messageCallback The callback to invoke for delivering any error messages.
      */
     public ErrorHandlingOkCallback(@NonNull final Context context,
+                                   @NonNull final Class<T> responseBodyClass,
                                    @NonNull final CallTrigger callTrigger,
                                    @Nullable final TaskMessageCallback messageCallback) {
-        this(context, callTrigger,
+        this(context, responseBodyClass, callTrigger,
                 context instanceof TaskProgressCallback ? (TaskProgressCallback) context : null,
                 messageCallback);
     }
@@ -126,10 +138,12 @@ public abstract class ErrorHandlingOkCallback implements Callback {
      * @param messageCallback The callback to invoke for delivering any error messages.
      */
     public ErrorHandlingOkCallback(@NonNull final Context context,
+                                   @NonNull final Class<T> responseBodyClass,
                                    @NonNull final CallTrigger callTrigger,
                                    @Nullable final TaskProgressCallback progressCallback,
                                    @Nullable final TaskMessageCallback messageCallback) {
         this.context = context;
+        this.responseBodyClass = responseBodyClass;
         this.callTrigger = callTrigger;
         this.progressCallback = progressCallback;
         this.messageCallback = messageCallback;
@@ -145,11 +159,11 @@ public abstract class ErrorHandlingOkCallback implements Callback {
      * definition provides extra information that's not needed by most individual callback
      * implementations, and is also invoked when HTTP error status codes are encountered (forcing
      * the implementation to manually check for success in each case). Therefore this implementation
-     * delegates to {@link #onResponse(Response)} in the case where it receives a successful HTTP
-     * status code, and to {@link #onFailure(Throwable)} otherwise, passing an instance of
+     * delegates to {@link #onResponse(T)} in the case where it receives a successful HTTP status
+     * code, and to {@link #onFailure(Throwable)} otherwise, passing an instance of
      * {@link HttpResponseStatusException} with the relevant error status code. This method is
      * declared as final, as subclasses are meant to be implementing the abstract
-     * {@link #onResponse(Response)} method instead of this one.
+     * {@link #onResponse(T)} method instead of this one.
      * <p>
      * This implementation takes care of delivering the appropriate error message to it's registered
      * callback, and invoking the callback for request process completion.
@@ -162,10 +176,17 @@ public abstract class ErrorHandlingOkCallback implements Callback {
         if (!response.isSuccessful()) {
             deliverFailure(new HttpResponseStatusException(response));
         } else {
+            final String responseBodyString;
+            try {
+                responseBodyString = response.body().string();
+            } catch (IOException error) {
+                deliverFailure(error);
+                return;
+            }
             if (progressCallback != null) {
                 progressCallback.finishProcess();
             }
-            onResponse(response);
+            onResponse(gson.fromJson(responseBodyString, responseBodyClass));
         }
     }
 
@@ -174,8 +195,8 @@ public abstract class ErrorHandlingOkCallback implements Callback {
      * whether due to cancellation, a connectivity problem, or a timeout. This method definition
      * provides extra information that's not needed by most individual callback implementations, so
      * this implementation only delegates to {@link #onFailure(Throwable)}. This method is declared
-     * as final, as subclasses are meant to be implementing the abstract
-     * {@link #onResponse(Response)} method instead of this one.
+     * as final, as subclasses are meant to be implementing the abstract {@link #onResponse(T)}
+     * method instead of this one.
      *
      * @param call The Call object that was used to enqueue the request.
      * @param error The cause of the request being interrupted.
@@ -208,9 +229,10 @@ public abstract class ErrorHandlingOkCallback implements Callback {
     /**
      * Callback method for a successful HTTP response.
      *
-     * @param response The response.
+     * @param responseBody The response body, converted to an instance of it's associated Java
+     *                     class.
      */
-    protected abstract void onResponse(@NonNull final Response response);
+    protected abstract void onResponse(@NonNull final T responseBody);
 
     /**
      * Callback method for when the HTTP response was not received successfully, whether due to
