@@ -1,6 +1,8 @@
 package org.edx.mobile.http.callback;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
@@ -28,6 +30,8 @@ import roboguice.RoboGuice;
  * failure callback method.
  */
 public abstract class ErrorHandlingOkCallback<T> implements Callback {
+    private static Handler handler = new Handler(Looper.getMainLooper());
+
     /**
      * A Context for resolving the error message strings.
      */
@@ -183,10 +187,16 @@ public abstract class ErrorHandlingOkCallback<T> implements Callback {
                 deliverFailure(error);
                 return;
             }
-            if (progressCallback != null) {
-                progressCallback.finishProcess();
-            }
-            onResponse(gson.fromJson(responseBodyString, responseBodyClass));
+            final T responseBody = gson.fromJson(responseBodyString, responseBodyClass);
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    if (progressCallback != null) {
+                        progressCallback.finishProcess();
+                    }
+                    onResponse(responseBody);
+                }
+            });
         }
     }
 
@@ -216,14 +226,19 @@ public abstract class ErrorHandlingOkCallback<T> implements Callback {
      *              {HttpResponseStatusException} if the failure was due to receiving an error code.
      */
     private void deliverFailure(@NonNull final Throwable error) {
-        if (progressCallback != null) {
-            progressCallback.finishProcess();
-        }
-        if (messageCallback != null) {
-            messageCallback.onMessage(callTrigger.getMessageType(),
-                    ErrorUtils.getErrorMessage(error, context));
-        }
-        onFailure(error);
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                if (progressCallback != null) {
+                    progressCallback.finishProcess();
+                }
+                if (messageCallback != null) {
+                    messageCallback.onMessage(callTrigger.getMessageType(),
+                            ErrorUtils.getErrorMessage(error, context));
+                }
+                onFailure(error);
+            }
+        });
     }
 
     /**

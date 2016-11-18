@@ -1,6 +1,8 @@
 package org.edx.mobile.http.serialization;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.NonNull;
 
 import com.google.gson.Gson;
@@ -24,6 +26,8 @@ import roboguice.RoboGuice;
  * failure callback method.
  */
 public abstract class OkCallback<T> implements Callback {
+    private static Handler handler = new Handler(Looper.getMainLooper());
+
     @Inject
     private Gson gson;
 
@@ -77,7 +81,13 @@ public abstract class OkCallback<T> implements Callback {
                 onFailure(error);
                 return;
             }
-            onResponse(gson.fromJson(responseBodyString, responseBodyClass));
+            final T responseBody = gson.fromJson(responseBodyString, responseBodyClass);
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    onResponse(responseBody);
+                }
+            });
         } else {
             onFailure(new HttpResponseStatusException(response));
         }
@@ -96,7 +106,12 @@ public abstract class OkCallback<T> implements Callback {
      */
     @Override
     public final void onFailure(@NonNull final Call call, @NonNull final IOException error) {
-        onFailure(error);
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                onFailure(error);
+            }
+        });
     }
 
     /**
