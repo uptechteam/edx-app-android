@@ -9,14 +9,17 @@ import org.edx.mobile.http.HttpStatus;
 import org.edx.mobile.http.cache.CacheManager;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Date;
 
-import okhttp3.Headers;
+import okhttp3.CipherSuite;
+import okhttp3.Handshake;
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
+import okhttp3.TlsVersion;
 import okhttp3.internal.http.CacheStrategy;
 import okhttp3.internal.http.HttpEngine;
 import okhttp3.internal.http.HttpMethod;
@@ -33,6 +36,16 @@ import roboguice.RoboGuice;
  */
 @Deprecated
 public class CustomCacheQueryInterceptor implements Interceptor {
+    /**
+     * A dummy TLS handshake to add to the custom-built cache responses for HTTPS requests, in order
+     * to have the CacheStrategy resolver validate it.
+     */
+    private static final Handshake DUMMY_HANDSHAKE = Handshake.get(
+            TlsVersion.TLS_1_2,
+            CipherSuite.TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,
+            Collections.EMPTY_LIST,
+            Collections.EMPTY_LIST);
+
     @Inject
     private CacheManager cacheManager;
 
@@ -57,36 +70,40 @@ public class CustomCacheQueryInterceptor implements Interceptor {
                  */
                 Response cacheResponse = response.newBuilder()
                         .code(HttpStatus.OK)
+                        .message("OK")
+                        .handshake(request.isHttps() ? DUMMY_HANDSHAKE : null)
+                        .priorResponse(null)
+                        .networkResponse(null)
+                        .cacheResponse(null)
                         .body(null)
                         .build();
                 final CacheStrategy cacheStrategy = new CacheStrategy.Factory(
                         System.currentTimeMillis(), request, cacheResponse).get();
                 cacheResponse = cacheStrategy.cacheResponse;
                 if (cacheResponse != null) {
-                    // If querying the server is forbidden, just return the cache response.
-                    if (cacheStrategy.networkRequest == null) {
-                        response = cacheResponse.newBuilder()
+                    /* Either querying the server is forbidden by the Cache-Control headers (if
+                     * there is no network response), or they require a conditional query
+                     * (otherwise). In the latter case, either the server has validated the cached
+                     * response or not. Only in the last case would the network response be
+                     * delivered; in the first two cases the cached response would be delivered
+                     * instead.
+                     */
+                    final Response networkResponse = response.networkResponse();
+                    if (networkResponse == null ||
+                            shouldUseCachedResponse(cacheResponse, networkResponse)) {
+                        response = response.newBuilder()
+                                .code(HttpStatus.OK)
                                 .cacheResponse(cacheResponse)
                                 .body(ResponseBody.create(MediaType.parse("application/json"),
                                         cachedBody))
                                 .build();
                     } else {
-                        final Response networkResponse = response.networkResponse();
-                        // If there is a network response in addition to the cache response, then do
-                        // a conditional get.
-                        if (shouldUseCachedResponse(cacheResponse, networkResponse)) {
-                            response = cacheResponse.newBuilder()
-                                    .headers(combine(cacheResponse.headers(), networkResponse.headers()))
-                                    .cacheResponse(cacheResponse)
-                                    .build();
-                        } else {
-                            response = response.newBuilder()
-                                    .cacheResponse(cacheResponse)
-                                    .build();
-                            if (HttpEngine.hasBody(response) &&
-                                    HttpMethod.invalidatesCache(request.method())) {
-                                cacheManager.remove(urlString);
-                            }
+                        response = response.newBuilder()
+                                .cacheResponse(cacheResponse)
+                                .build();
+                        if (HttpEngine.hasBody(response) &&
+                                HttpMethod.invalidatesCache(request.method())) {
+                            cacheManager.remove(urlString);
                         }
                     }
                 }
@@ -124,58 +141,5 @@ public class CustomCacheQueryInterceptor implements Interceptor {
         }
 
         return false;
-    }
-
-    /**
-     * Combine cached headers with network headers as defined by RFC 2616, 13.5.3.
-     *
-     * @param cachedHeaders The cache headers.
-     * @param networkHeaders The network headers.
-     * @return The combined headers.
-     */
-    private static Headers combine(@NonNull final Headers cachedHeaders,
-                                   @NonNull final Headers networkHeaders) {
-        final Headers.Builder result = new Headers.Builder();
-
-        for (int i = 0, size = cachedHeaders.size(); i < size; i++) {
-            final String fieldName = cachedHeaders.name(i);
-            final String value = cachedHeaders.value(i);
-            if ("Warning".equalsIgnoreCase(fieldName) && value.startsWith("1")) {
-                continue; // Drop 100-level freshness warnings.
-            }
-            if (!isEndToEndHeader(fieldName) || networkHeaders.get(fieldName) == null) {
-                result.add(fieldName, value);
-            }
-        }
-
-        for (int i = 0, size = networkHeaders.size(); i < size; i++) {
-            final String fieldName = networkHeaders.name(i);
-            if ("Content-Length".equalsIgnoreCase(fieldName)) {
-                continue; // Ignore content-length headers of validating responses.
-            }
-            if (isEndToEndHeader(fieldName)) {
-                result.add(fieldName, networkHeaders.value(i));
-            }
-        }
-
-        return result.build();
-    }
-
-    /**
-     * Check whether a given field is an end-to-end header, as defined by RFC 2616, 13.5.1, and
-     * return the result.
-     *
-     * @param fieldName The header field name.
-     * @return True if {@code fieldName} is an end-to-end HTTP header, and false otherwise.
-     */
-    private static boolean isEndToEndHeader(String fieldName) {
-        return !"Connection".equalsIgnoreCase(fieldName)
-                && !"Keep-Alive".equalsIgnoreCase(fieldName)
-                && !"Proxy-Authenticate".equalsIgnoreCase(fieldName)
-                && !"Proxy-Authorization".equalsIgnoreCase(fieldName)
-                && !"TE".equalsIgnoreCase(fieldName)
-                && !"Trailers".equalsIgnoreCase(fieldName)
-                && !"Transfer-Encoding".equalsIgnoreCase(fieldName)
-                && !"Upgrade".equalsIgnoreCase(fieldName);
     }
 }

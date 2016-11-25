@@ -12,6 +12,7 @@ import org.edx.mobile.util.IOUtils;
 import org.edx.mobile.util.Sha1Util;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.charset.Charset;
 
@@ -73,6 +74,8 @@ public class CacheManager {
         if (file != null) {
             try {
                 return IOUtils.toString(file, Charset.defaultCharset());
+            } catch (FileNotFoundException e) {
+                // Cache is not available.
             } catch (IOException e) {
                 logger.error(e, true);
             }
