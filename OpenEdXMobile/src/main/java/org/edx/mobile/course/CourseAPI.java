@@ -500,7 +500,7 @@ public class CourseAPI {
      * @return
      */
     @NonNull
-    private static IBlock normalizeCourseStructure(
+    public static IBlock normalizeCourseStructure(
             @NonNull final CourseStructureV1Model courseStructureV1Model,
             @NonNull final String courseId) {
         BlockModel topBlock = courseStructureV1Model.getBlockById(courseStructureV1Model.root);

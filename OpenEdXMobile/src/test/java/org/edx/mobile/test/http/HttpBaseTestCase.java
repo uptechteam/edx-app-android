@@ -8,11 +8,11 @@ import com.google.inject.Injector;
 import org.edx.mobile.authentication.AuthResponse;
 import org.edx.mobile.authentication.LoginAPI;
 import org.edx.mobile.authentication.LoginService;
-import org.edx.mobile.http.Api;
+import org.edx.mobile.course.CourseAPI;
+import org.edx.mobile.course.CourseService;
 import org.edx.mobile.http.HttpStatus;
-import org.edx.mobile.http.IApi;
+import org.edx.mobile.http.util.OkHttpUtil;
 import org.edx.mobile.model.api.ProfileModel;
-import org.edx.mobile.services.ServiceManager;
 import org.edx.mobile.test.BaseTestCase;
 import org.edx.mobile.test.util.MockDataUtil;
 import org.edx.mobile.util.Config;
@@ -27,6 +27,7 @@ import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import okhttp3.OkHttpClient;
 import okhttp3.mockwebserver.Dispatcher;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
@@ -47,13 +48,14 @@ public class HttpBaseTestCase extends BaseTestCase {
     private static final String API_HOST_URL = "API_HOST_URL"; // Config key for API host url
     // Use a mock server to serve fixed responses
     protected MockWebServer server;
-    protected Api api;
     // Per-test configuration for whether the mock web server should create artificial delays
     // before sending the response.
     protected boolean useArtificialDelay = false;
-    protected ServiceManager serviceManager;
+    protected OkHttpClient okHttpClient;
     protected LoginAPI loginAPI;
     protected LoginService loginService;
+    protected CourseAPI courseAPI;
+    protected CourseService courseService;
 
     /**
      * Returns the base url used by the mock server
@@ -68,7 +70,7 @@ public class HttpBaseTestCase extends BaseTestCase {
         server.setDispatcher(new MockResponseDispatcher());
         server.start();
 
-        api = new Api(RuntimeEnvironment.application);
+        okHttpClient = OkHttpUtil.getOAuthBasedClient(RuntimeEnvironment.application);
 
         super.setUp();
     }
@@ -84,16 +86,16 @@ public class HttpBaseTestCase extends BaseTestCase {
     @Override
     public void addBindings() {
         super.addBindings();
-        module.addBinding(IApi.class, api);
+        module.addBinding(OkHttpClient.class, okHttpClient);
     }
 
     @Override
     protected void inject(Injector injector) throws Exception {
         super.inject(injector);
-        injector.injectMembers(api);
-        serviceManager = injector.getInstance(ServiceManager.class);
         loginAPI = injector.getInstance(LoginAPI.class);
         loginService = injector.getInstance(LoginService.class);
+        courseAPI = injector.getInstance(CourseAPI.class);
+        courseService = injector.getInstance(CourseService.class);
     }
 
     /**

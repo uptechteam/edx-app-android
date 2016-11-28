@@ -13,9 +13,11 @@ import android.widget.ProgressBar;
 import com.joanzapata.iconify.IconDrawable;
 
 import org.edx.mobile.R;
+import org.edx.mobile.course.CourseAPI;
 import org.edx.mobile.http.util.OkHttpUtil;
 import org.edx.mobile.model.api.EnrolledCoursesResponse;
 import org.edx.mobile.model.course.CourseComponent;
+import org.edx.mobile.model.course.CourseStructureV1Model;
 import org.junit.Test;
 import org.junit.runners.Parameterized.Parameter;
 import org.robolectric.Robolectric;
@@ -24,6 +26,7 @@ import org.robolectric.shadows.ShadowActivity;
 import org.robolectric.util.ActivityController;
 
 import static org.assertj.android.api.Assertions.assertThat;
+import static org.edx.mobile.http.util.CallUtil.executeStrict;
 import static org.junit.Assert.*;
 
 public abstract class CourseBaseActivityTest extends BaseFragmentActivityTest {
@@ -52,7 +55,7 @@ public abstract class CourseBaseActivityTest extends BaseFragmentActivityTest {
     protected Intent getIntent() {
         EnrolledCoursesResponse courseData;
         try {
-            courseData = api.getEnrolledCourses().get(0);
+            courseData = executeStrict(courseAPI.getEnrolledCourses()).get(0);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -60,14 +63,15 @@ public abstract class CourseBaseActivityTest extends BaseFragmentActivityTest {
         Bundle extras = new Bundle();
         extras.putSerializable(Router.EXTRA_COURSE_DATA, courseData);
         if (provideCourseId) {
-            CourseComponent courseComponent;
+            String courseId = courseData.getCourse().getId();
+            CourseStructureV1Model model;
             try {
-                courseComponent = serviceManager.getCourseStructure(
-                        courseData.getCourse().getId(),
-                        OkHttpUtil.REQUEST_CACHE_TYPE.IGNORE_CACHE);
+                model = executeStrict(courseAPI.getCourseStructure(courseId));
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
+            CourseComponent courseComponent = (CourseComponent)
+                    CourseAPI.normalizeCourseStructure(model, courseId);
             extras.putString(Router.EXTRA_COURSE_COMPONENT_ID, courseComponent.getId());
         }
         intent.putExtra(Router.EXTRA_BUNDLE, extras);
