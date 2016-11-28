@@ -8,7 +8,7 @@ import android.support.annotation.NonNull;
 import com.google.gson.Gson;
 import com.google.inject.Inject;
 
-import org.edx.mobile.http.HttpResponseStatusException;
+import org.edx.mobile.http.HttpStatusException;
 
 import java.io.IOException;
 
@@ -64,9 +64,9 @@ public abstract class OkCallback<T> implements Callback {
      * the implementation to manually check for success in each case). Therefore this implementation
      * only delegates to {@link #onResponse(T)} in the case where it receives a successful HTTP
      * status code, and to {@link #onFailure(Throwable)} otherwise, passing an instance of
-     * {@link HttpResponseStatusException} with the relevant error status code. This method is
-     * declared as final, as subclasses are meant to be implementing the abstract
-     * {@link #onResponse(T)} method instead of this one.
+     * {@link HttpStatusException} with the relevant error status code. This method is declared as
+     * final, as subclasses are meant to be implementing the abstract {@link #onResponse(T)} method
+     * instead of this one.
      *
      * @param call The Call object that was used to enqueue the request.
      * @param response The HTTP response data.
@@ -89,7 +89,7 @@ public abstract class OkCallback<T> implements Callback {
                 }
             });
         } else {
-            onFailure(new HttpResponseStatusException(response));
+            onFailure(new HttpStatusException(response));
         }
     }
 

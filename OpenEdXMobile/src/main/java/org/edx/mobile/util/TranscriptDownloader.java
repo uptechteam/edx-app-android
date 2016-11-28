@@ -2,7 +2,7 @@ package org.edx.mobile.util;
 
 import android.content.Context;
 
-import org.edx.mobile.http.HttpResponseStatusException;
+import org.edx.mobile.http.HttpStatusException;
 import org.edx.mobile.http.util.OkHttpUtil;
 import org.edx.mobile.logger.Logger;
 
@@ -30,7 +30,7 @@ public abstract class TranscriptDownloader implements Runnable {
                     .build())
                     .execute();
             if (!response.isSuccessful()) {
-                throw new HttpResponseStatusException(response);
+                throw new HttpStatusException(response);
             }
             onDownloadComplete(response.body().string());
         } catch (Exception localException) {
