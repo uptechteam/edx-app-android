@@ -1,6 +1,7 @@
 package org.edx.mobile.http.cache;
 
 import android.content.Context;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
@@ -8,6 +9,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 import org.edx.mobile.logger.Logger;
+import org.edx.mobile.util.Config;
 import org.edx.mobile.util.IOUtils;
 import org.edx.mobile.util.Sha1Util;
 
@@ -15,6 +17,11 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import roboguice.RoboGuice;
+import roboguice.inject.RoboInjector;
 
 /**
  * The cache manager for HTTP responses. The cache is stored on the filesystem, within the
@@ -103,12 +110,55 @@ public class CacheManager {
      * @return The cache file, or null if the cache directory couldn't be created.
      */
     @Nullable
-    private File getFile(@NonNull final String url) {
+    private File getFile(@NonNull String url) {
+        // Convert the URL to the original formats.
+        url = convert(url);
         final File cacheDir = new File(context.getFilesDir(), "http-cache");
         if (cacheDir.mkdirs() || cacheDir.isDirectory()) {
             final String hash = Sha1Util.SHA1(url);
             return new File(cacheDir, hash);
         }
         return null;
+    }
+
+    /**
+     * The regular expression pattern for the course structure GET URL, to be used for converting it
+     * to the previous format.
+     */
+    private Pattern courseStructureGetUrlConversionPattern;
+
+    /**
+     * Convert the response URL from the new formats used in the Retrofit implementation, to the
+     * previous formats used in the original Apache HTTP client implementation, which was what
+     * populated this cache.
+     *
+     * @param url The URL to convert.
+     * @return The converted URL.
+     */
+    @NonNull
+    private String convert(@NonNull final String url) {
+        /* The course structure URL was stripped of it's non-definitive query parameters before
+         * being stored in the cache, to prevent it not becoming non-accessible after internal API
+         * changes on the query parameters. The course ID parameter was retained, but not URL-
+         * escaped.
+         */
+        if (courseStructureGetUrlConversionPattern == null) {
+            final RoboInjector injector = RoboGuice.getInjector(context);
+            final Config config = injector.getInstance(Config.class);
+            String baseUrl = config.getApiHostURL();
+            if (!baseUrl.endsWith("/")) {
+                baseUrl += '/';
+            }
+            courseStructureGetUrlConversionPattern = Pattern.compile("^(" + baseUrl +
+                    "api/courses/v1/blocks/\\?)(?:[^=]+=[^=]+[&;])*(course_id=)([^=]+)");
+        }
+        final Matcher urlMatcher = courseStructureGetUrlConversionPattern.matcher(url);
+        if (urlMatcher.matches()) {
+            final StringBuffer urlConversionBuffer = new StringBuffer(url.length());
+            urlMatcher.appendReplacement(urlConversionBuffer,
+                    "$1$2" + Uri.decode(urlMatcher.group(3)));
+            return urlConversionBuffer.toString();
+        }
+        return url;
     }
 }
