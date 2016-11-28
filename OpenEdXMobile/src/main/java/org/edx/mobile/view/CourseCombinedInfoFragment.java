@@ -13,6 +13,7 @@ import android.widget.Switch;
 
 import com.facebook.Settings;
 import com.facebook.widget.LikeView;
+import com.google.gson.reflect.TypeToken;
 import com.google.inject.Inject;
 
 import org.edx.mobile.R;
@@ -187,16 +188,17 @@ public class CourseCombinedInfoFragment extends BaseFragment {
                 .url(enrollment.getCourse().getCourse_updates())
                 .get()
                 .build())
-                .enqueue(new ErrorHandlingOkCallback<List>(
+                .enqueue(new ErrorHandlingOkCallback<List<AnnouncementsModel>>(
                         getActivity(),
-                        List.class,
+                        new TypeToken<List<AnnouncementsModel>>() {},
                         CallTrigger.LOADING_CACHED,
                         new TaskProgressCallback.ProgressViewController(
                                 getView().findViewById(R.id.loading_indicator))) {
                     @Override
-                    protected void onResponse(@NonNull List announcementsList) {
-                        savedAnnouncements = (List<AnnouncementsModel>) announcementsList;
-                        populateAnnouncements(savedAnnouncements);
+                    protected void onResponse(
+                            @NonNull final List<AnnouncementsModel> announcementsList) {
+                        savedAnnouncements = announcementsList;
+                        populateAnnouncements(announcementsList);
                     }
 
                     @Override

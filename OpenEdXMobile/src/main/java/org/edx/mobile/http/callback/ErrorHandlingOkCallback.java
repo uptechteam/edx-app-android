@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.google.inject.Inject;
 
 import org.edx.mobile.http.HttpStatusException;
@@ -15,6 +16,7 @@ import org.edx.mobile.view.common.TaskMessageCallback;
 import org.edx.mobile.view.common.TaskProgressCallback;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -23,13 +25,18 @@ import roboguice.RoboGuice;
 
 /**
  * Generic abstract implementation of OkHttps's {@link Callback}
- * interface, that takes care of delivering status and error information
- * to the proper callbacks. It also provides (and delegates to) a simpler
- * callback interface for subclasses, stripping out unnecessary
- * parameters, and redirecting all responses with error codes to the
- * failure callback method.
+ * interface, that takes care of converting the response body to an
+ * object of the specified model class, and delivering status and
+ * error information to the proper callbacks. It also provides (and
+ * delegates to) a simpler callback interface for subclasses,
+ * stripping out unnecessary parameters, and redirecting all responses
+ * with error codes to the failure callback method. The callbacks are
+ * guaranteed to be invoked on the main thread.
  */
 public abstract class ErrorHandlingOkCallback<T> implements Callback {
+    /**
+     * A Handler for the main looper, for delivering messages on the main thread.
+     */
     private static Handler handler = new Handler(Looper.getMainLooper());
 
     /**
@@ -38,8 +45,11 @@ public abstract class ErrorHandlingOkCallback<T> implements Callback {
     @NonNull
     private final Context context;
 
+    /**
+     * The response body type.
+     */
     @NonNull
-    private final Class<T> responseBodyClass;
+    private final Type responseBodyType;
 
     /**
      * The trigger for initiating the call. This is used to determine the type of error message to
@@ -60,6 +70,9 @@ public abstract class ErrorHandlingOkCallback<T> implements Callback {
     @Nullable
     private final TaskMessageCallback messageCallback;
 
+    /**
+     * The Gson instance for converting the response body to the desired type.
+     */
     @Inject
     private Gson gson;
 
@@ -73,6 +86,7 @@ public abstract class ErrorHandlingOkCallback<T> implements Callback {
      *                instead, with the relevant callback parameters explicitly passed as null (this
      *                may require casting the null in case of ambiguity when using a constructor
      *                that only sets one callback explicitly).
+     * @param responseBodyClass The response body class.
      * @param callTrigger The trigger for initiating the call. This is used to determine the type of
      *                    error message to deliver.
      */
@@ -88,10 +102,33 @@ public abstract class ErrorHandlingOkCallback<T> implements Callback {
      * Create a new instance of this class.
      *
      * @param context A Context for resolving the error message strings. Note that for convenience,
+     *                this will be checked to determine whether it's implementing any of the
+     *                callback interfaces, and will be registered as such if so. If this is not the
+     *                desired outcome, then one of the alternative constructors should be used
+     *                instead, with the relevant callback parameters explicitly passed as null (this
+     *                may require casting the null in case of ambiguity when using a constructor
+     *                that only sets one callback explicitly).
+     * @param responseBodyTypeToken The response body type token.
+     * @param callTrigger The trigger for initiating the call. This is used to determine the type of
+     *                    error message to deliver.
+     */
+    public ErrorHandlingOkCallback(@NonNull final Context context,
+                                   @NonNull final TypeToken<T> responseBodyTypeToken,
+                                   @NonNull final CallTrigger callTrigger) {
+        this(context, responseBodyTypeToken, callTrigger,
+                context instanceof TaskProgressCallback ? (TaskProgressCallback) context : null,
+                context instanceof TaskMessageCallback ? (TaskMessageCallback) context : null);
+    }
+
+    /**
+     * Create a new instance of this class.
+     *
+     * @param context A Context for resolving the error message strings. Note that for convenience,
      *                this will be checked to determine whether it's implementing the
      *                {@link TaskMessageCallback} interface, and will be registered as such if so.
      *                If this is not the desired outcome, then the other constructor should be used
      *                that takes this callback parameter, and it should be explicitly set as null.
+     * @param responseBodyClass The response body Class.
      * @param callTrigger The trigger for initiating the call. This is used to determine the type of
      *                    error message to deliver.
      * @param progressCallback The callback to invoke on start and finish of the request. Note that
@@ -110,12 +147,38 @@ public abstract class ErrorHandlingOkCallback<T> implements Callback {
 
     /**
      * Create a new instance of this class.
-     *  @param context A Context for resolving the error message strings. Note that for convenience,
+     *
+     * @param context A Context for resolving the error message strings. Note that for convenience,
+     *                this will be checked to determine whether it's implementing the
+     *                {@link TaskMessageCallback} interface, and will be registered as such if so.
+     *                If this is not the desired outcome, then the other constructor should be used
+     *                that takes this callback parameter, and it should be explicitly set as null.
+     * @param responseBodyTypeToken The response body type token.
+     * @param callTrigger The trigger for initiating the call. This is used to determine the type of
+     *                    error message to deliver.
+     * @param progressCallback The callback to invoke on start and finish of the request. Note that
+     *                         since no callback method in this class is invoked upon request
+     *                         initiation, it assumes that it's being initiated immediately, and
+     *                         thus invokes that start callback immediately as well.
+     */
+    public ErrorHandlingOkCallback(@NonNull final Context context,
+                                   @NonNull final TypeToken<T> responseBodyTypeToken,
+                                   @NonNull final CallTrigger callTrigger,
+                                   @Nullable final TaskProgressCallback progressCallback) {
+        this(context, responseBodyTypeToken, callTrigger,
+                progressCallback,
+                context instanceof TaskMessageCallback ? (TaskMessageCallback) context : null);
+    }
+
+    /**
+     * Create a new instance of this class.
+     *
+     * @param context A Context for resolving the error message strings. Note that for convenience,
      *                this will be checked to determine whether it's implementing the
      *                {@link TaskProgressCallback} interface, and will be registered as such if so.
      *                If this is not the desired outcome, then the other constructor should be used
      *                that takes this callback parameter, and it should be explicitly set as null.
-     * @param responseBodyClass
+     * @param responseBodyClass The response body class.
      * @param callTrigger The trigger for initiating the call. This is used to determine the type of
      *                    error message to deliver.
      * @param messageCallback The callback to invoke for delivering any error messages.
@@ -132,7 +195,30 @@ public abstract class ErrorHandlingOkCallback<T> implements Callback {
     /**
      * Create a new instance of this class.
      *
+     * @param context A Context for resolving the error message strings. Note that for convenience,
+     *                this will be checked to determine whether it's implementing the
+     *                {@link TaskProgressCallback} interface, and will be registered as such if so.
+     *                If this is not the desired outcome, then the other constructor should be used
+     *                that takes this callback parameter, and it should be explicitly set as null.
+     * @param responseBodyTypeToken The response body type token.
+     * @param callTrigger The trigger for initiating the call. This is used to determine the type of
+     *                    error message to deliver.
+     * @param messageCallback The callback to invoke for delivering any error messages.
+     */
+    public ErrorHandlingOkCallback(@NonNull final Context context,
+                                   @NonNull final TypeToken<T> responseBodyTypeToken,
+                                   @NonNull final CallTrigger callTrigger,
+                                   @Nullable final TaskMessageCallback messageCallback) {
+        this(context, responseBodyTypeToken, callTrigger,
+                context instanceof TaskProgressCallback ? (TaskProgressCallback) context : null,
+                messageCallback);
+    }
+
+    /**
+     * Create a new instance of this class.
+     *
      * @param context A Context for resolving the error message strings.
+     * @param responseBodyClass The response body class.
      * @param callTrigger The trigger for initiating the call. This is used to determine the type of
      *                    error message to deliver.
      * @param progressCallback The callback to invoke on start and finish of the request. Note that
@@ -146,8 +232,51 @@ public abstract class ErrorHandlingOkCallback<T> implements Callback {
                                    @NonNull final CallTrigger callTrigger,
                                    @Nullable final TaskProgressCallback progressCallback,
                                    @Nullable final TaskMessageCallback messageCallback) {
+        this(context, (Type) responseBodyClass, callTrigger, progressCallback, messageCallback);
+    }
+
+    /**
+     * Create a new instance of this class.
+     *
+     * @param context A Context for resolving the error message strings.
+     * @param responseBodyTypeToken The response body type token.
+     * @param callTrigger The trigger for initiating the call. This is used to determine the type of
+     *                    error message to deliver.
+     * @param progressCallback The callback to invoke on start and finish of the request. Note that
+     *                         since no callback method in this class is invoked upon request
+     *                         initiation, it assumes that it's being initiated immediately, and
+     *                         thus invokes that start callback immediately as well.
+     * @param messageCallback The callback to invoke for delivering any error messages.
+     */
+    public ErrorHandlingOkCallback(@NonNull final Context context,
+                                   @NonNull final TypeToken<T> responseBodyTypeToken,
+                                   @NonNull final CallTrigger callTrigger,
+                                   @Nullable final TaskProgressCallback progressCallback,
+                                   @Nullable final TaskMessageCallback messageCallback) {
+        this(context, responseBodyTypeToken.getType(),
+                callTrigger, progressCallback, messageCallback);
+    }
+
+    /**
+     * Create a new instance of this class.
+     *
+     * @param context A Context for resolving the error message strings.
+     * @param responseBodyType The response body type.
+     * @param callTrigger The trigger for initiating the call. This is used to determine the type of
+     *                    error message to deliver.
+     * @param progressCallback The callback to invoke on start and finish of the request. Note that
+     *                         since no callback method in this class is invoked upon request
+     *                         initiation, it assumes that it's being initiated immediately, and
+     *                         thus invokes that start callback immediately as well.
+     * @param messageCallback The callback to invoke for delivering any error messages.
+     */
+    public ErrorHandlingOkCallback(@NonNull final Context context,
+                                   @NonNull final Type responseBodyType,
+                                   @NonNull final CallTrigger callTrigger,
+                                   @Nullable final TaskProgressCallback progressCallback,
+                                   @Nullable final TaskMessageCallback messageCallback) {
         this.context = context;
-        this.responseBodyClass = responseBodyClass;
+        this.responseBodyType = responseBodyType;
         this.callTrigger = callTrigger;
         this.progressCallback = progressCallback;
         this.messageCallback = messageCallback;
@@ -187,7 +316,7 @@ public abstract class ErrorHandlingOkCallback<T> implements Callback {
                 deliverFailure(error);
                 return;
             }
-            final T responseBody = gson.fromJson(responseBodyString, responseBodyClass);
+            final T responseBody = gson.fromJson(responseBodyString, responseBodyType);
             handler.post(new Runnable() {
                 @Override
                 public void run() {

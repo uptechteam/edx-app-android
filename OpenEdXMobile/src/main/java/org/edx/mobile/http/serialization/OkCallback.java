@@ -6,11 +6,13 @@ import android.os.Looper;
 import android.support.annotation.NonNull;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.google.inject.Inject;
 
 import org.edx.mobile.http.HttpStatusException;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -19,25 +21,55 @@ import roboguice.RoboGuice;
 
 /**
  * Abstract implementation of OkHttp's
- * {@link Callback} interface, which provides (and
- * delegates to) a simpler interface for subclasses,
- * stripping out unnecessary parameters, and
- * redirecting all responses with error codes to the
- * failure callback method.
+ * {@link Callback} interface, that takes care of
+ * converting the response body to an object of the
+ * specified model class, and provides (and delegates to)
+ * a simpler interface for subclasses, stripping out
+ * unnecessary parameters, and redirecting all responses
+ * with error codes to the failure callback method. The
+ * callbacks are guaranteed to be invoked on the main
+ * thread.
  */
 public abstract class OkCallback<T> implements Callback {
+    /**
+     * A Handler for the main looper, for delivering messages on the main thread.
+     */
     private static Handler handler = new Handler(Looper.getMainLooper());
 
+    /**
+     * The response body type.
+     */
+    @NonNull
+    private final Type responseBodyType;
+
+    /**
+     * The Gson instance for converting the response body to the desired type.
+     */
     @Inject
     private Gson gson;
 
-    @NonNull
-    private final Class<T> responseBodyClass;
-
+    /**
+     * Create a new instance of this class.
+     *
+     * @param context A Context to use for injecting the Gson instance.
+     * @param responseBodyClass The response body class.
+     */
     protected OkCallback(@NonNull final Context context,
                          @NonNull final Class<T> responseBodyClass) {
         RoboGuice.getInjector(context).injectMembers(this);
-        this.responseBodyClass = responseBodyClass;
+        responseBodyType = responseBodyClass;
+    }
+
+    /**
+     * Create a new instance of this class.
+     *
+     * @param context A Context to use for injecting the Gson instance.
+     * @param responseBodyTypeToken The response body type token.
+     */
+    protected OkCallback(@NonNull final Context context,
+                         @NonNull final TypeToken<T> responseBodyTypeToken) {
+        RoboGuice.getInjector(context).injectMembers(this);
+        responseBodyType = responseBodyTypeToken.getType();
     }
 
     /**
@@ -81,7 +113,7 @@ public abstract class OkCallback<T> implements Callback {
                 onFailure(error);
                 return;
             }
-            final T responseBody = gson.fromJson(responseBodyString, responseBodyClass);
+            final T responseBody = gson.fromJson(responseBodyString, responseBodyType);
             handler.post(new Runnable() {
                 @Override
                 public void run() {
