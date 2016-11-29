@@ -22,10 +22,10 @@ import java.nio.charset.Charset;
  *
  * @deprecated This is deprecated since with the transition to OkHttp, we're now relying on it's own
  * automatic caching mechanism. However, this is still being kept around as a read-only resource for
- * a while, being queried as a last resort by as a last resort by the CustomCacheQueryInterceptor,
- * to facilitate the transition without any user-facing issues. This may be removed later after a
- * significant percentage of the user base have upgraded to a version that uses the OkHttp API in
- * the Courseware module.
+ * a while, being queried as a last resort by the CustomCacheQueryInterceptor, to facilitate the
+ * transition without any user-facing issues. This may be removed later after a significant
+ * percentage of the user base have upgraded to a version that uses the OkHttp API in the Courseware
+ * module.
  */
 @Singleton
 @Deprecated

@@ -11,7 +11,7 @@ public class TimeInterval {
     }
 
     /**
-     * A constant value of one, representing one seconds. This is defined for consistency with all
+     * A constant value of one, representing one second. This is defined for consistency with all
      * the other units, and a convenience for clarification of the time format.
      */
     public static final int SECOND = 1;
