@@ -79,6 +79,49 @@ public abstract class ErrorHandlingOkCallback<T> implements Callback {
     /**
      * Create a new instance of this class.
      *
+     * @param context A Context for resolving the error message strings.
+     * @param responseBodyClass The response body class.
+     * @param callTrigger The trigger for initiating the call. This is used to determine the type of
+     *                    error message to deliver.
+     * @param progressCallback The callback to invoke on start and finish of the request. Note that
+     *                         since no callback method in this class is invoked upon request
+     *                         initiation, it assumes that it's being initiated immediately, and
+     *                         thus invokes that start callback immediately as well.
+     * @param messageCallback The callback to invoke for delivering any error messages.
+     */
+    public ErrorHandlingOkCallback(@NonNull final Context context,
+                                   @NonNull final Class<T> responseBodyClass,
+                                   @NonNull final CallTrigger callTrigger,
+                                   @Nullable final TaskProgressCallback progressCallback,
+                                   @Nullable final TaskMessageCallback messageCallback) {
+        this(context, (Type) responseBodyClass, callTrigger, progressCallback, messageCallback);
+    }
+
+    /**
+     * Create a new instance of this class.
+     *
+     * @param context A Context for resolving the error message strings.
+     * @param responseBodyTypeToken The response body type token.
+     * @param callTrigger The trigger for initiating the call. This is used to determine the type of
+     *                    error message to deliver.
+     * @param progressCallback The callback to invoke on start and finish of the request. Note that
+     *                         since no callback method in this class is invoked upon request
+     *                         initiation, it assumes that it's being initiated immediately, and
+     *                         thus invokes that start callback immediately as well.
+     * @param messageCallback The callback to invoke for delivering any error messages.
+     */
+    public ErrorHandlingOkCallback(@NonNull final Context context,
+                                   @NonNull final TypeToken<T> responseBodyTypeToken,
+                                   @NonNull final CallTrigger callTrigger,
+                                   @Nullable final TaskProgressCallback progressCallback,
+                                   @Nullable final TaskMessageCallback messageCallback) {
+        this(context, responseBodyTypeToken.getType(),
+                callTrigger, progressCallback, messageCallback);
+    }
+
+    /**
+     * Create a new instance of this class.
+     *
      * @param context A Context for resolving the error message strings. Note that for convenience,
      *                this will be checked to determine whether it's implementing any of the
      *                callback interfaces, and will be registered as such if so. If this is not the
@@ -212,49 +255,6 @@ public abstract class ErrorHandlingOkCallback<T> implements Callback {
         this(context, responseBodyTypeToken, callTrigger,
                 context instanceof TaskProgressCallback ? (TaskProgressCallback) context : null,
                 messageCallback);
-    }
-
-    /**
-     * Create a new instance of this class.
-     *
-     * @param context A Context for resolving the error message strings.
-     * @param responseBodyClass The response body class.
-     * @param callTrigger The trigger for initiating the call. This is used to determine the type of
-     *                    error message to deliver.
-     * @param progressCallback The callback to invoke on start and finish of the request. Note that
-     *                         since no callback method in this class is invoked upon request
-     *                         initiation, it assumes that it's being initiated immediately, and
-     *                         thus invokes that start callback immediately as well.
-     * @param messageCallback The callback to invoke for delivering any error messages.
-     */
-    public ErrorHandlingOkCallback(@NonNull final Context context,
-                                   @NonNull final Class<T> responseBodyClass,
-                                   @NonNull final CallTrigger callTrigger,
-                                   @Nullable final TaskProgressCallback progressCallback,
-                                   @Nullable final TaskMessageCallback messageCallback) {
-        this(context, (Type) responseBodyClass, callTrigger, progressCallback, messageCallback);
-    }
-
-    /**
-     * Create a new instance of this class.
-     *
-     * @param context A Context for resolving the error message strings.
-     * @param responseBodyTypeToken The response body type token.
-     * @param callTrigger The trigger for initiating the call. This is used to determine the type of
-     *                    error message to deliver.
-     * @param progressCallback The callback to invoke on start and finish of the request. Note that
-     *                         since no callback method in this class is invoked upon request
-     *                         initiation, it assumes that it's being initiated immediately, and
-     *                         thus invokes that start callback immediately as well.
-     * @param messageCallback The callback to invoke for delivering any error messages.
-     */
-    public ErrorHandlingOkCallback(@NonNull final Context context,
-                                   @NonNull final TypeToken<T> responseBodyTypeToken,
-                                   @NonNull final CallTrigger callTrigger,
-                                   @Nullable final TaskProgressCallback progressCallback,
-                                   @Nullable final TaskMessageCallback messageCallback) {
-        this(context, responseBodyTypeToken.getType(),
-                callTrigger, progressCallback, messageCallback);
     }
 
     /**
