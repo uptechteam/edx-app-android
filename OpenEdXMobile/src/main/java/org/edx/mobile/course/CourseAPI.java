@@ -339,20 +339,6 @@ public class CourseAPI {
                 videos = s.sections.get(m.getSection().getDisplayName());
             }
 
-            //This has been commented out because for some Videos thereare no english srt's and hence returning empty
-            /*try{
-            // FIXME: Utter hack code that should be removed as soon as the server starts
-            // returning default english transcripts.
-            if (m.getSummary().getTranscripts().englishUrl == null) {
-                // Example URL: "http://mobile3.m.sandbox.edx.org/api/mobile/v0.5/video_outlines/transcripts/MITx/6.002x_4x/3T2014/Welcome/en";
-                String usageKeyParts[] = m.getSummary().getId().split("/");
-                String usageKey = usageKeyParts[usageKeyParts.length - 1];
-                String fallbackUrl = getBaseUrl() + "/api/mobile/v0.5/video_outlines/transcripts/" + courseId + "/" + usageKey + "/en";
-                m.getSummary().getTranscripts().englishUrl = fallbackUrl;
-            }
-            }catch(Exception e){
-                logger.error(e);
-            }*/
             videos.add(m);
         }
 
