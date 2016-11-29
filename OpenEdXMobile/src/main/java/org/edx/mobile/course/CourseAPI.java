@@ -99,14 +99,13 @@ public class CourseAPI {
     }
 
     /**
-     * Returns course identified by given id from cache, null if not course is found.
-     *
-     * @param courseId
-     * @return
+     * @param courseId The course ID.
+     * @return The course identified by the provided ID if available from the cache, null if no
+     *         course is found.
      */
     @Nullable
     public EnrolledCoursesResponse getCourseById(@NonNull final String courseId) throws Exception {
-        for (EnrolledCoursesResponse r : executeStrict(getEnrolledCourses())) {
+        for (EnrolledCoursesResponse r : executeStrict(getEnrolledCoursesFromCache())) {
             if (r.getCourse().getId().equals(courseId)) {
                 return r;
             }
