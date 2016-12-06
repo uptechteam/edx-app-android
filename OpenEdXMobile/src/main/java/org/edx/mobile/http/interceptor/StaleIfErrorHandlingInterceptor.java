@@ -1,5 +1,7 @@
 package org.edx.mobile.http.interceptor;
 
+import android.support.annotation.NonNull;
+
 import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -23,25 +25,28 @@ public class StaleIfErrorHandlingInterceptor implements Interceptor {
      * header.
      */
     private static final Pattern PATTERN_STALE_IF_ERROR = Pattern.compile(
-            "^((.*[,;])?\\s*)stale-if-error(\\s*(=\\s*[^,;\\s].*[^,;\\s])?([,;].*)?)$");
+            "((?:^|[,;])\\s*)stale-if-error(\\s*(=\\s*[^,;\\s]+\\s*)?)");
     /**
-     * A regular expression replacement for {@link StaleIfErrorHandlingInterceptor#PATTERN_STALE_IF_ERROR}
-     * that replaces the 'stale-if-error' directive with 'only-if-cached'.
+     * A regular expression replacement for
+     * {@link StaleIfErrorHandlingInterceptor#PATTERN_STALE_IF_ERROR} that replaces the
+     * 'stale-if-error' directive with 'only-if-cached'.
      */
-    private static final String REPLACEMENT_FORCE_CACHE = "$1only-if-cached$3";
+    private static final String REPLACEMENT_FORCE_CACHE = "$1only-if-cached$2";
     /**
-     * A regular expression replacement for {@link StaleIfErrorHandlingInterceptor#PATTERN_STALE_IF_ERROR}
-     * that replaces the 'stale-if-error=' directive with 'only-if-cached; max-stale='.
+     * A regular expression replacement for
+     * {@link StaleIfErrorHandlingInterceptor#PATTERN_STALE_IF_ERROR} that replaces the
+     * 'stale-if-error=' directive with 'only-if-cached; max-stale='.
      */
-    private static final String REPLACEMENT_FORCE_CACHE_MAX_STALE = "$1only-if-cached; max-stale$3";
+    private static final String REPLACEMENT_FORCE_CACHE_MAX_STALE = "$1only-if-cached; max-stale$2";
     /**
      * The capturing group index for the value of the 'stale-if-error' directive in
      * {@link StaleIfErrorHandlingInterceptor#PATTERN_STALE_IF_ERROR}.
      */
-    private static final int GROUP_STALE_IF_ERROR_VALUE = 4;
+    private static final int GROUP_STALE_IF_ERROR_VALUE = 3;
 
+    @NonNull
     @Override
-    public Response intercept(Chain chain) throws IOException {
+    public Response intercept(@NonNull final Chain chain) throws IOException {
         final Request request = chain.request();
 
         // Check to see if the stale-if-error Cache-Control directive is present; if not, then
@@ -89,20 +94,35 @@ public class StaleIfErrorHandlingInterceptor implements Interceptor {
         for (int i = 0, headersCount = headers.size(); i < headersCount; i++) {
             final String headerName = headers.name(i);
             String headerValue = headers.value(i);
-            if (headerName.equals("Cache-Control")) {
-                StringBuffer newHeaderValueBuffer = new StringBuffer();
+            if (headerName.equalsIgnoreCase("Cache-Control")) {
                 final Matcher directiveMatcher = PATTERN_STALE_IF_ERROR.matcher(headerValue);
-                while (directiveMatcher.find()) {
-                    directiveMatcher.appendReplacement(newHeaderValueBuffer,
-                            directiveMatcher.group(GROUP_STALE_IF_ERROR_VALUE) == null ?
-                                    REPLACEMENT_FORCE_CACHE : REPLACEMENT_FORCE_CACHE_MAX_STALE);
+                if (directiveMatcher.find()) {
+                    final StringBuffer newHeaderValueBuffer = new StringBuffer();
+                    do {
+                        /* Verify that the directive is ended properly by the matcher either
+                         * reaching the end of the header value string, or a comma or semicolon
+                         * separator. Otherwise this directive isn't validly constructed, it will be
+                         * skipped.
+                         */
+                        final int nextCharIndex = directiveMatcher.end();
+                        if (nextCharIndex != headerValue.length()) {
+                            final char nextChar = headerValue.charAt(nextCharIndex);
+                            if (nextChar != ',' && nextChar != ';') {
+                                continue;
+                            }
+                        }
+                        directiveMatcher.appendReplacement(newHeaderValueBuffer,
+                                directiveMatcher.group(GROUP_STALE_IF_ERROR_VALUE) == null ?
+                                        REPLACEMENT_FORCE_CACHE :
+                                        REPLACEMENT_FORCE_CACHE_MAX_STALE);
+                    } while (directiveMatcher.find());
+                    directiveMatcher.appendTail(newHeaderValueBuffer);
+                    headerValue = newHeaderValueBuffer.toString();
                 }
-                directiveMatcher.appendTail(newHeaderValueBuffer);
-                headerValue = newHeaderValueBuffer.toString();
             }
             forceCacheHeadersBuilder.add(headerName, headerValue);
         }
-        Response newResponse = chain.proceed(
+        final Response newResponse = chain.proceed(
                 request.newBuilder()
                         .headers(forceCacheHeadersBuilder.build())
                         .build());

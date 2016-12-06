@@ -21,7 +21,7 @@ public class StaleIfErrorInterceptor implements Interceptor {
      * header.
      */
     private static final Pattern PATTERN_STALE_IF_ERROR = Pattern.compile(
-            "^(.*[,;])?\\s*stale-if-error\\s*(=\\s*[^,;\\s].*[^,;\\s])?([,;].*)?$");
+            "(?:^|[,;])\\s*stale-if-error\\s*(?:=\\s*[^,;\\s]+\\s*)?(?:$|[,;])");
 
     @Override
     public Response intercept(@NonNull final Chain chain) throws IOException {
