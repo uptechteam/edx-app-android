@@ -108,7 +108,7 @@ public interface CourseService {
     /**
      * @return Enrolled courses of given user, only from the cache.
      */
-    @Headers("Cache-Control: only-if-cached, max-stale=" + Integer.MAX_VALUE)
+    @Headers("Cache-Control: only-if-cached, max-stale")
     @GET("/api/mobile/v0.5/users/{username}/course_enrollments")
     Call<List<EnrolledCoursesResponse>> getEnrolledCoursesFromCache(
             @Path("username") final String username,
@@ -144,7 +144,7 @@ public interface CourseService {
     Call<CourseStructureV1Model> getCourseStructure(@Query("username") final String username,
                                                     @Query("course_id") final String courseId);
 
-    @Headers("Cache-Control: only-if-cached, max-stale=" + Integer.MAX_VALUE)
+    @Headers("Cache-Control: only-if-cached, max-stale")
     @GET("/api/courses/v1/blocks/?" +
             "depth=all&" +
             "requested_fields=graded,format,student_view_multi_device&" +
