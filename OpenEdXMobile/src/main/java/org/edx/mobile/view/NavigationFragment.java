@@ -94,7 +94,8 @@ public class NavigationFragment extends BaseFragment {
                     getActivity(),
                     profile.username,
                     CallTrigger.LOADING_UNCACHED,
-                    (TaskProgressCallback) null)); // Disable global loading indicator
+                    null, // Disable global loading indicator
+                    null)); // No place to show an error notification
         }
         EventBus.getDefault().register(this);
     }
