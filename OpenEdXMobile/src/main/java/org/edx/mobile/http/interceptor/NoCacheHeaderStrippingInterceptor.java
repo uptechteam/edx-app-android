@@ -36,6 +36,10 @@ public class NoCacheHeaderStrippingInterceptor implements Interceptor {
     @NonNull
     private final CookieJar cookieJar;
 
+    public NoCacheHeaderStrippingInterceptor() {
+        this(CookieJar.NO_COOKIES);
+    }
+
     public NoCacheHeaderStrippingInterceptor(@NonNull final CookieJar cookieJar) {
         this.cookieJar = cookieJar;
     }

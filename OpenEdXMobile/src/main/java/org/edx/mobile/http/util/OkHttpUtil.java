@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 
 import org.edx.mobile.BuildConfig;
 import org.edx.mobile.R;
-import org.edx.mobile.http.cookie.WebViewCookieManagerDelegate;
 import org.edx.mobile.http.interceptor.CustomCacheQueryInterceptor;
 import org.edx.mobile.http.interceptor.JsonMergePatchInterceptor;
 import org.edx.mobile.http.interceptor.NewVersionBroadcastInterceptor;
@@ -20,7 +19,6 @@ import java.io.File;
 import java.util.List;
 
 import okhttp3.Cache;
-import okhttp3.CookieJar;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -44,20 +42,6 @@ public class OkHttpUtil {
                                           boolean isOAuthBased, boolean usesOfflineCache) {
         final OkHttpClient.Builder builder = new OkHttpClient.Builder();
         List<Interceptor> interceptors = builder.interceptors();
-        interceptors.add(new JsonMergePatchInterceptor());
-        interceptors.add(new UserAgentInterceptor(
-                System.getProperty("http.agent") + " " +
-                        context.getString(R.string.app_name) + "/" +
-                        BuildConfig.APPLICATION_ID + "/" +
-                        BuildConfig.VERSION_NAME));
-        final CookieJar cookieJar;
-        if (isOAuthBased) {
-            interceptors.add(new OauthHeaderRequestInterceptor(context));
-            cookieJar = new WebViewCookieManagerDelegate(context);
-        } else {
-            cookieJar = CookieJar.NO_COOKIES;
-        }
-        builder.cookieJar(cookieJar);
         if (usesOfflineCache) {
             final File cacheDirectory = new File(context.getFilesDir(), "http-cache");
             if (!cacheDirectory.exists()) {
@@ -68,7 +52,16 @@ public class OkHttpUtil {
             interceptors.add(new StaleIfErrorInterceptor());
             interceptors.add(new StaleIfErrorHandlingInterceptor());
             interceptors.add(new CustomCacheQueryInterceptor(context));
-            builder.networkInterceptors().add(new NoCacheHeaderStrippingInterceptor(cookieJar));
+            builder.networkInterceptors().add(new NoCacheHeaderStrippingInterceptor());
+        }
+        interceptors.add(new JsonMergePatchInterceptor());
+        interceptors.add(new UserAgentInterceptor(
+                System.getProperty("http.agent") + " " +
+                        context.getString(R.string.app_name) + "/" +
+                        BuildConfig.APPLICATION_ID + "/" +
+                        BuildConfig.VERSION_NAME));
+        if (isOAuthBased) {
+            interceptors.add(new OauthHeaderRequestInterceptor(context));
         }
         interceptors.add(new NewVersionBroadcastInterceptor());
         if (BuildConfig.DEBUG) {
