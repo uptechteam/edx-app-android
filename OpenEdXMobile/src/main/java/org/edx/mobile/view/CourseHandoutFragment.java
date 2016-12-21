@@ -106,7 +106,7 @@ public class CourseHandoutFragment extends BaseFragment {
                             return;
                         }
 
-                        if (result != null && (!TextUtils.isEmpty(result.handouts_html))) {
+                        if (!TextUtils.isEmpty(result.handouts_html)) {
                             populateHandouts(result);
                         } else {
                             CourseHandoutFragment.this.showErrorMessage(R.string.no_handouts_to_display,

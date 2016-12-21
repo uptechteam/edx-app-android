@@ -34,7 +34,7 @@ public abstract class OkCallback<T> implements Callback {
     /**
      * A Handler for the main looper, for delivering messages on the main thread.
      */
-    private static Handler handler = new Handler(Looper.getMainLooper());
+    private static final Handler handler = new Handler(Looper.getMainLooper());
 
     /**
      * The response body type.
