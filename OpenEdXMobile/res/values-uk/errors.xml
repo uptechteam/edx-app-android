@@ -1,0 +1,83 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources>
+  <!--An error occurred but we don't know why-->
+  <string name="error_unknown">Невідома помилка. Будь ласка, спробуйте пізніше.</string>
+  <!--Network error messages-->
+  <!--Error shown when  user attempts an action but needs an internet connection-->
+  <string name="network_not_connected">Ви не з\'єднані з Інтернет.</string>
+  <!--Concise error shown when user attempts an action but needs an internet connection-->
+  <string name="network_not_connected_short">Немає доступу до мережі</string>
+  <!--Alert dialog title shown when a network request fails-->
+  <string name="reset_no_network_title">Помилка з\'єднання</string>
+  <!--Alert dialog content shown when a network request fails because the user has no internet connection-->
+  <string name="reset_no_network_message">Ви не з\'єднання з Інтернет. Будь ласка, перевірте з\'єднання з Інтернет.</string>
+  <!--An error ocurred due to some kind of network failure-->
+  <string name="network_connected_error">Помилка з\'єднання. Перевірте Ваше Інтернет-з\'єднання, будь ласка.</string>
+  <!--Title of prompt indicating issue loading a video-->
+  <string name="network_error_header">Неможливо завантажити відео</string>
+  <!--Content of prompt indicating issue loading a video-->
+  <string name="network_error_message">Перевірте Інтернет-з\'єднання.</string>
+  <!--The server we are trying to use is not available right now-->
+  <string name="network_service_unavailable">Сервіс недоступний. Будь ласка, спробуйте пізніше.</string>
+  <!--Login error messages-->
+  <!--Error shown during login when user attempts login without entering a username or e-mail-->
+  <string name="error_enter_email">Будь ласка, введіть Ваше ім\'я користувача або e-mail та спробуйте знову.</string>
+  <!--Error shown during login when user enters an invalid email address-->
+  <string name="error_invalid_email">Будь ласка, перевірте коректність вводу Вашого e-mail та спробуйте знову.</string>
+  <!--Error shown during login when user attempts login without entering a password-->
+  <string name="error_enter_password">Будь ласка, введіть пароль та спробуйте знову.</string>
+  <!--Title of alert shown during login when user attempts login via Facebook without having linked their account-->
+  <string name="error_account_not_linked_title_fb">Обліковий запис Facebook не пов\'язаний з обліковим записом {platform_name}</string>
+  <!--Content of alert shown during login when user attempts login via Facebook without having linked their account-->
+  <string name="error_account_not_linked_desc_fb">Переконайтесь, що обліковий запис Facebook пов\'язаний з Вашим обліковим записом {platform_name} у {platform_destination}</string>
+  <!--Title of alert shown during login when user attempts login via Google without having linked their account-->
+  <string name="error_account_not_linked_title_google">Обліковий запис Google не пов\'язаний з обліковим записом {platform_name}</string>
+  <!--Content of alert shown during login when user attempts login via Google without having linked their account-->
+  <string name="error_account_not_linked_desc_google">Переконайтесь, що обліковий запис Google пов\'язаний з Вашим обліковим записом {platform_name} у {platform_destination}</string>
+  <!--Download error messages-->
+  <!--Label shown on video list item whose download failed-->
+  <string name="error_download_failed">Помилка завантаження</string>
+  <!--Confirmation message shown when attempting to download a large quantity of video data-->
+  <string name="file_size_exceeded">Розмір файлу для завантаження більше, ніж вільного місця на Вашому пристрої.</string>
+  <!--Confirmation message shown when attempting to download a large quantity of video data-->
+  <string name="download_exceed_message">Відео, які Ви обрали, більше за 1 Гб. Ви дійсно бажаєте завантажити ці відео?</string>
+  <!--Message shown when user attempts to download a video over cellular data,
+    but has chosen to only allow video downloads over wifi-->
+  <string name="wifi_off_message">Ваші поточні налаштування дозволяють завантаження тільки через Wi-Fi.
+Будь ласка, підключіться до Wi-Fi мережі або змініть налаштування завантаження.</string>
+  <!--Offline Access-->
+  <!--Label shown when user attempts to view a course section that hasn't been synced-->
+  <string name="section_offline_header">Цей розділ не доступний у Автономному режимі</string>
+  <!--Label shown when user attempts to view a course section that hasn't been synced-->
+  <string name="section_offline_message">Якщо Ви завантажили контент для іншого розділу, перейдіть у той розділ,
+щоб побачити контент</string>
+  <!--Alert dialog title shown when user attempts to view a video that hasn't been synced-->
+  <string name="video_offline_header">Це відео не доступне у Автономному режимі.</string>
+  <!--Alert dialog content shown when user attempts to view a video that hasn't been synced-->
+  <string name="video_offline_message">Будь ласка, оберіть відео, що Ви завантажили на Ваш пристрій</string>
+  <!--New version available-->
+  <!--Snackbar notification shown when the current version of the app is unsupported-->
+  <string name="app_version_unsupported">Ваша версія додатка більше не підтримується</string>
+  <!--Snackbar notification shown when the current version of the app is deprecated-->
+  <!--Snackbar notification shown when the current version of the app is outdated-->
+  <string name="app_version_outdated">Доступна нова версія додатка</string>
+  <!--Snackbar action button label for opening an app store to upgrade the app to the latest version-->
+  <string name="app_version_update_button">Оновлення</string>
+  <!--Toast notification for when the user presses the update action button from the Snackbar
+         notifications while no supported app store or browser is installed on the device with which
+         the app could be updated-->
+  <string name="app_version_upgrade_app_store_unavailable">На пристрої не знайдено підтримки сховища додатків</string>
+  <!--Registration Error Messages-->
+  <!--Error prompt shown during registration to indicate an empty field. Argument is a field name-->
+  <string name="error_enter_field">Будь ласка, введіть Ваш %1$s.</string>
+  <!--Error prompt shown during registration to indicate a field missing a selection. Argument is a field name-->
+  <string name="error_select_field">Будь ласка, оберіть Ваш %1$s.</string>
+  <!--Error prompt shown during registration when a field entry is too short. Arguments are 1) a field name, 2) a number-->
+  <string name="error_min_length">%1$s повинне містити принаймні %2$d символів.</string>
+  <!--Error prompt shown during registration when a field entry is too long. Arguments are 1) a field name, 2) a number-->
+  <string name="error_max_length">%1$s не може мати більше, ніж %2$d символів.</string>
+  <!--Error message shown when a course hasn't started yet-->
+  <string name="course_not_started">Цей курс ще не стартував</string>
+  <!--Error message shown when a user can't perform an action on e.g. add a post/response/comment in forums-->
+  <string name="action_not_completed">Вашу дію не може бути завершено</string>
+</resources>
