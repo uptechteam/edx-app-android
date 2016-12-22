@@ -17,7 +17,7 @@
             android:layout_marginBottom="75dp"
             android:layout_marginTop="75dp"
             android:contentDescription="@string/phonetic_app_name"
-            android:src="@drawable/launch_screen_logo" />
+            android:src="@drawable/prometeus_logo_colored_black" />
 
         <LinearLayout
             android:layout_width="match_parent"

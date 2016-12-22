@@ -1,0 +1,540 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources>
+  <!--Certificates-->
+  <!--Label congratulation user on finishing course-->
+  <string name="course_details_congratulations">Вітаємо!</string>
+  <!--Message for user who has successfully completed a certificate course-->
+  <string name="course_details_earned_cert">Ви пройшли курс.</string>
+  <!--Button that opens a full view of an earned certificate-->
+  <string name="course_details_view_cert_button">Показати Сертифікат</string>
+  <!--Course Discovery-->
+  <!--Enroll Now button text-->
+  <string name="enroll_now_button_text">Записатися зараз</string>
+  <!--Effort field name-->
+  <string name="effort_field_name">Тривалість:</string>
+  <!--When discovering courses, some courses have an externally hosted video that describes it.
+    In that case, a play icon is shown on top of the course image. This is the content description.-->
+  <string name="go_to_video">Перейти до відео</string>
+  <!--View Course button text text-->
+  <string name="view_course_button_text">Дивитися курс</string>
+  <!--Floating overlay text shown to user when they succeed at enrolling in a course-->
+  <string name="you_are_now_enrolled">Ви записані на цей курс</string>
+  <!--Error message shown when dashboard cannot be shown from course detail view-->
+  <string name="cannot_show_dashboard">Неможливо відобразити панель.</string>
+  <!--Course Sharing-->
+  <!--Description of button that will open the share course menu-->
+  <string name="share_course_button">Поділитися Вашим курсом</string>
+  <!--Share menu title-->
+  <string name="share_course_popup_header">Поділитися цим курсом через...</string>
+  <!--Share course-->
+  <string name="share_course_message">Я записався на курс на {platform_name}! Переконайтесь:</string>
+  <!--Settings Page-->
+  <!--Label for wifi only switch-->
+  <string name="settings_wifi_top">Завантаження тільки через Wi-Fi</string>
+  <!--Label explaining what wifi only means in detail-->
+  <string name="settings_wifi_bottom">Завантажувати матеріали тільки за допомогою Wi-Fi</string>
+  <!--Certificate Page-->
+  <!--Description of button that will open the certificate sharing menu-->
+  <string name="share_certificate_button">Поділитися Вашим сертифікатом</string>
+  <!--Text that pre-populates your post/email/SMS when sharing certificate-->
+  <string name="share_certificate_message">Я щойно отримав сертифікат {platform_name}! Переконайтесь: {certificate_url}</string>
+  <!--Tab of tab for certicate for finished course-->
+  <string name="tab_label_certificate">Сертифікат</string>
+  <!--Header for popup list of share targets-->
+  <string name="share_certificate_popup_header">Поділитися Вашим сертифікатом через...</string>
+  <!--Data Usage Dialog-->
+  <!--Alert dialog error message shown when using a feature with a required Internet connection-->
+  <string name="need_data">Ця функція потребує активного Інтернет-з\'єднання.</string>
+  <!--Login Activity Place Holders-->
+  <!--Hint text for login field-->
+  <string name="email_username">Ім\'я користувача або e-mail адреса</string>
+  <!--Hint text for email address field in reset password dialog-->
+  <string name="email">E-mail адреса</string>
+  <!--Hint text for password field-->
+  <string name="password">Пароль</string>
+  <!--Button text allowing user to reset their password-->
+  <string name="forgot_password">Забули пароль?</string>
+  <!--Button initiating login process after user enters credentials like username and password-->
+  <string name="login">Увійти</string>
+  <!--Accessible content description of sign in button on Log in screen-->
+  <string name="login_btn">Клавіша Увійти</string>
+  <!--Message shown while waiting for action-->
+  <string name="progress_text">Будь ласка, зачекайте</string>
+  <!--Message shown while user waits for response to a sign in request-->
+  <string name="signing_in">Вхід виконано</string>
+  <!--Message for shown after tapping Sign In-->
+  <string name="error_message">Повідомлення про помилку</string>
+  <!--Generic error during log in-->
+  <string name="error_heading">Наступна помилка виникла при вході</string>
+  <!--Error during log in.-->
+  <string name="login_failed">Будь ласка, впевніться, що Ваші ім\'я користувача або e-mail та пароль вірні та спробуйте знову.</string>
+  <string name="by_signing_up">Увійшовши до цієї програми, Ви погоджуєтесь з</string>
+  <string name="licensing_agreement">{platform_name} Умови надання послуг та Кодекс честі</string>
+  <string name="login_title">Увійти</string>
+  <!--Accessible content description of close button on Sign in and Sign up screen-->
+  <string name="close">Закрити</string>
+  <!--Accessible content description prefix of dropdowns on Sign up screen, like, country and gender dropdowns-->
+  <string name="dropdown_list_prefix">Випадаючий список</string>
+  <!--Navigation Drawer Labels-->
+  <!--The accessibility description for the navigation header-->
+  <string name="navigation_header">Вхід виконано як {username}, {email}</string>
+  <!--Button to open drawer-->
+  <string name="label_open_navigation_menu">Відкрити меню навігації</string>
+  <!--Button to open drawer-->
+  <string name="label_close_navigation_menu">Закрити меню навігації</string>
+  <!--Button text to show user Settings screen-->
+  <string name="action_settings">Налаштування</string>
+  <!--Content description for edit profile button-->
+  <string name="open_profile_button">Відкрити Ваш профіль</string>
+  <!--Title of user's course list screen-->
+  <string name="label_my_courses">Мої курси</string>
+  <!--Title of user's downloaded videos list screen-->
+  <string name="label_my_videos">Мої відео</string>
+  <!--Title of Find Courses screen-->
+  <string name="label_find_courses">Знайти курси</string>
+  <!--Button allowing users to send an email for feedback-->
+  <string name="label_submit_feedback">Відправити відгук</string>
+  <!--Toggle switch on state label-->
+  <string name="toggle_turn_on">Увімкнено</string>
+  <!--Toggle switch off state label-->
+  <string name="toggle_turn_off">Вимкнено</string>
+  <!--Logout button label-->
+  <string name="logout">Вийти</string>
+  <!--Settings screen title-->
+  <string name="settings_txt">Налаштування</string>
+  <!--Settings screen version-->
+  <string name="label_version">Версія додатка</string>
+  <!--Button text to show user Settings screen-->
+  <string name="label_settings">Мої налаштування</string>
+  <!--Help Dialog Place Holder messages-->
+  <!--Reset password alert dialog title-->
+  <string name="confirm_dialog_title_help">Відновити пароль</string>
+  <!--Reset password alert dialog message-->
+  <string name="success_dialog_title_help">E-mail для відновлення паролю відправлено</string>
+  <!--Reset password alert dialog title-->
+  <string name="title_reset_password_failed">Помилка відновлення паролю</string>
+  <!--Label for switch controlling whether users permit downloading using cellular data or only wifi-->
+  <string name="wifi_dialog_title_help">Дозволити завантаження сертифікату</string>
+  <!--Password reset sent succesfully alert-->
+  <string name="success_dialog_message_help">Ми надіслали повідомлення з інструкціями по скиданню пароля на Вашу адресу електронної пошти. Якщо Ви його не побачите протягом кількох наступних хвилин, перевірте папку спаму.</string>
+  <!--Password reset dialog prompt-->
+  <string name="confirm_dialog_message_help">Введіть адресу електронної пошти для Вашого аккаунту, і ми надішлемо інструкції для скидання Вашого паролю.</string>
+  <!--Label explaining toggle for cellular data access-->
+  <string name="wifi_dialog_message_help">Дозволяє Вашому пристрою завантажувати відео за допомогою мережі Вашого оператора, коли Wi-Fi не доступний. Можуть бути стягнуті додаткові кошти за передачу даних.</string>
+  <!--Confirmation text for delete video dialog-->
+  <string name="delete_dialog_title_help">Підтвердити видалення</string>
+  <plurals name="delete_video_dialog_msg">
+    <item quantity="one">Ви справді хочете видалити це відео?</item>
+    <item quantity="few">Ви справді хочете видалити ці відео?</item>
+    <item quantity="other">Ви справді хочете видалити ці відео?</item>
+  </plurals>
+  <!--Alert dialog title for users with zero rated data-->
+  <string name="leaving_app_data_title">Вийти із додатка {platform_name}</string>
+  <!--Alert dialog content for users with zero rated data-->
+  <string name="leaving_app_data_message">Якщо Ви полишаєте додаток, Ви більше не побачите контент {platform_name} у вільному доступі. За передачу даних може стягуватися платня.</string>
+  <!--Title of agreement users must accept to use the app-->
+  <string name="end_user_title">Ліцензійна угода кінцевого користувача</string>
+  <!--My Courses-->
+  <!--Row of course on dashboard screen-->
+  <string name="courseware_title">Програма навчання</string>
+  <!--Row of course on dashboard screen-->
+  <!--NOTE: TODO - not final one-->
+  <string name="courseware_subtitle">Відео та завдання</string>
+  <!--Row of Discussion on dashboard screen-->
+  <string name="discussion_title">Обговорення</string>
+  <!--Row of Discussion on dashboard screen-->
+  <!--NOTE: TODO - not final one-->
+  <string name="discussion_subtitle">Долучитися до обговорення</string>
+  <!--Row of Handouts on dashboard screen-->
+  <string name="handouts_title">Роздаткові матеріали</string>
+  <!--Row of Handouts on dashboard screen-->
+  <!--NOTE: TODO - not final one-->
+  <string name="handouts_subtitle">Важлива інформація по курсу</string>
+  <!--Row of announcement on dashboard screen-->
+  <string name="announcement_title">Оголошення</string>
+  <!--Row of announcement on dashboard screen-->
+  <!--NOTE: TODO - not final one-->
+  <string name="announcement_subtitle">Останні новини</string>
+  <!--Accessible content description of school code label a course-->
+  <string name="school_code">Кодекс школи</string>
+  <!--Accessible content description of course name label field-->
+  <string name="course_name">Ім\'я курсу</string>
+  <!--Label indicating new course content has been downloaded-->
+  <string name="new_course_content">Новий матеріал курсу</string>
+  <!--Label for date when course starts-->
+  <string name="label_starting">Стартує - {date}</string>
+  <!--Label for course that has ended-->
+  <string name="label_ended">Закінчено - {date}</string>
+  <!--Label for date when course is ending-->
+  <string name="label_ending">Закінчується - {date}</string>
+  <!--Course Details-->
+  <!--Accessible content description of label for course content-->
+  <string name="course_content">Матеріал курсу</string>
+  <!--Tab title for course handouts section-->
+  <string name="tab_label_handouts">Матеріал</string>
+  <!--Button for last accessed course section. Will be followed by course name-->
+  <string name="last_accessed">Останній відвіданий розділ</string>
+  <!--Label shown when no courseware content is available-->
+  <string name="no_chapter_text">Наразі програма навчання не доступна.</string>
+  <!--Label shown when user is enrolled in no courses-->
+  <string name="no_courses_to_display">Здається, Ви не записалися на жоден з курсів</string>
+  <!--Label shown when no announcements are available for a course-->
+  <string name="no_announcements_to_display">Наразі немає жодних оголошень до курсу</string>
+  <!--Label shown when no handouts are available for a course-->
+  <string name="no_handouts_to_display">Наразі немає матеріалу для цього курсу.</string>
+  <!--Discussion Topics-->
+  <!--Label for the discussion topics page-->
+  <string name="discussion_topics_title">Теми для обговорення</string>
+  <!--Hint displayed in search view for discussion posts-->
+  <string name="topics_search">Пошук усіх публікацій</string>
+  <!--Discussion Posts Fragment-->
+  <!--Title for discussion post search results-->
+  <string name="discussion_posts_search_title">Пошук результатів</string>
+  <!--Label for the the filter and sort options for refining the thread list-->
+  <string name="discussion_posts_refine">Уточнити:</string>
+  <!--Label for creating a new post-->
+  <string name="discussion_post_create_new_post">Створити нову публікацію</string>
+  <!--Label for creating a new comment-->
+  <!--Discussion posts filter options-->
+  <!--Discussion posts filter for all posts-->
+  <string name="discussion_posts_filter_all_posts">Всі публікації</string>
+  <!--Discussion posts filter for unread posts-->
+  <string name="discussion_posts_filter_unread_posts">Непрочитані</string>
+  <!--Discussion posts filter for unanswered posts-->
+  <string name="discussion_posts_filter_unanswered_posts">Пропущені</string>
+  <!--Discussion posts sort options-->
+  <!--Discussion posts sort by recent activity-->
+  <string name="discussion_posts_sort_recent_activity">Остання активність</string>
+  <!--Discussion posts sort by most activity-->
+  <string name="discussion_posts_sort_most_activity">Найбільша активність</string>
+  <!--Discussion posts sort by most votes-->
+  <string name="discussion_posts_sort_most_votes">Найбільше голосів</string>
+  <!--Label for the visibility of a discussion post that is only visible to cohort-->
+  <string name="discussion_post_visibility_cohort">Публікація доступна тільки для {cohort}.</string>
+  <!--Label for the visibility of a discussion post that is visible to everyone-->
+  <string name="discussion_post_visibility_everyone">Публікація доступна усім</string>
+  <!--Used while constructing the author attribution text for a discussion post e.g. "3 days ago by Brian (Staff)"-->
+  <string name="discussion_post_author_attribution">{author}</string>
+  <!--Used while constructing the author attribution text for an answer response e.g. "Marked as answer 2 days ago by Khalid (Community TA)"-->
+  <string name="discussion_post_marked_as_answer">Відмітити як прочитане</string>
+  <!--Used while constructing the author attribution text for an endorsed response e.g. "Endorsed 2 days ago by Khalid"-->
+  <string name="discussion_post_endorsed">Схвалено</string>
+  <!--Used for putting authorLabel into parenthesis e.g. (Community TA) or (Staff)-->
+  <string name="discussion_post_author_label_attribution">({text})</string>
+  <!--Label indicating the number of replies on a post e.g. 47 total-->
+  <string name="discussion_post_total_replies">{total_replies} усього</string>
+  <!--Label indicating the last time a post was updated e.g. Last post: Jun 22, 2016-->
+  <string name="discussion_post_last_interaction_date">Остання публікація: {date}</string>
+  <!--Discussion Responses-->
+  <!--Label for question type discussions that are answered-->
+  <string name="course_discussion_answered_title">Вирішене питання</string>
+  <!--Label for question type discussions that are unanswered-->
+  <string name="course_discussion_unanswered_title">Невирішене питання</string>
+  <!--Label for adding a discussion response-->
+  <!--Label for number of discussion responses-->
+  <!--Label for number of discussion comments-->
+  <!--Label for adding a new comment-->
+  <!--Label for indicating that a response is an answer-->
+  <string name="discussion_responses_answer">Відповідь</string>
+  <!--Label for indicating that a response is endorsed-->
+  <string name="discussion_responses_endorsed">Схвалено</string>
+  <!--Label for time span when its less than a second after posting a response/comment-->
+  <string name="just_now">Щойно</string>
+  <!--Label for letting the user know his/her response was successfully added-->
+  <string name="discussion_response_posted">Вашу відповідь було додано</string>
+  <!--Label for letting the user know his/her comment was successfully added-->
+  <string name="discussion_comment_posted">Ваш коментар було додано.</string>
+  <!--Discussion Responses Action Bar-->
+  <!--Label to indicate number of votes-->
+  <!--Label to indicate discussion response is not marked as inappropriate-->
+  <string name="discussion_responses_report_label">Поскаржитися</string>
+  <!--Label for discussion response that has been marked as inappropriate-->
+  <!--Title in adding a new comment-->
+  <string name="discussion_add_comment_title">Додати коментар</string>
+  <!--Title when adding a new comment is disabled-->
+  <string name="discussion_add_comment_disabled_title">Коментарі до цієї відповіді закрито</string>
+  <!--Title in showing list of comments-->
+  <string name="discussion_comments">Коментарі</string>
+  <!--Add comment button title in adding a new comment-->
+  <string name="discussion_add_comment_button_label">Додати коментар</string>
+  <!--Add comment button description for accessibility in adding a new comment-->
+  <string name="discussion_add_comment_button_description">Клавіша додавання коментаря</string>
+  <!--Add your comment placeholder in adding a new comment-->
+  <!--Title in adding a new response-->
+  <string name="discussion_add_response_title">Додати відповідь</string>
+  <!--Title when adding a new response is disabled-->
+  <string name="discussion_add_response_disabled_title">Відповіді до цієї публікації закрито</string>
+  <!--Add response button title in adding a new response-->
+  <string name="discussion_add_response_button_label">Додати відповідь</string>
+  <!--Add response button description for accessibility in adding a new response-->
+  <string name="discussion_add_response_button_description">Клавіша додавання відповіді</string>
+  <!--Add your response placeholder in adding a new response-->
+  <!--Title placeholder in adding a new post-->
+  <string name="discussion_post_title">Назва</string>
+  <!--Label for selected topic when creating a post-->
+  <string name="discussion_add_post_topic_selection">Тема: {topic}</string>
+  <!--Add post button title in adding a new discussion-->
+  <string name="discussion_add_post_button_label">Опублікувати обговорення</string>
+  <!--Add post button description for accessibility in adding a new discussion-->
+  <string name="discussion_add_post_button_description">Клавіша обговорення публікації</string>
+  <!--Add post button title in adding a new post-->
+  <string name="discussion_add_question_button_label">Опублікувати запитання</string>
+  <!--Add post button content description for accessibility in adding a new post-->
+  <string name="discussion_add_question_button_description">Клавіша публікації запитання</string>
+  <!--Add your post placeholder in adding a new post-->
+  <!--Add your post placeholder in adding a new post-->
+  <!--Question text in adding a new post-->
+  <string name="discussion_question">Запитання</string>
+  <!--Assessment-->
+  <!--Label showing next unit in a sub-section on assessment navigation bar-->
+  <string name="assessment_next">Далі</string>
+  <!--Label showing previous unit in a sub-section on assessment navigation bar-->
+  <string name="assessment_previous">Назад</string>
+  <!--Label showing assessment only available on website-->
+  <string name="assessment_not_available">Цей інтерактивний компонент ще не доступний на мобільному телефоні.</string>
+  <!--Label showing assessment only available on website-->
+  <string name="assessment_explore_on_web">Відкрийте інші частини цього курсу чи переглядайте цю частину на сайті.</string>
+  <!--Button to show wiew on web for assessment-->
+  <string name="assessment_view_on_web">Показати на сайті</string>
+  <!--Label to show empty assessment-->
+  <string name="assessment_empty">У цьому розділі немає навчального матеріалу.</string>
+  <!--Label to show a course will be starting soon-->
+  <string name="assessment_soon">Незабаром</string>
+  <!--Label to notify user to rotate device for viewing a video in full screen-->
+  <string name="assessment_rotate_for_fullscreen">Повернути Ваш пристрій для перегляду відео у повноекранному режимі</string>
+  <!--Label showing only youtube is available-->
+  <string name="assessment_only_on_youtube">Відео може бути відображене тільки у YouTube.</string>
+  <!--Label for button to open on youtube-->
+  <string name="assessment_open_on_youtube">Переглянути відео у YouTube</string>
+  <!--Video List-->
+  <!--Label shown to indicate video currently downloading-->
+  <string name="started_downloading">Завантаження</string>
+  <!--Title of video download screen-->
+  <string name="title_download">Завантаження</string>
+  <!--MyVideos-->
+  <!--Title of all videos section-->
+  <string name="my_all_videos">Усі відео</string>
+  <!--Title of recent videos section-->
+  <string name="my_recent_videos">Нещодавні відео</string>
+  <!--Label indicating user has no Internet connection-->
+  <string name="offline_text">Автономний режим</string>
+  <!--Label shown in videos section when user has no videos downloaded-->
+  <string name="no_videos_to_display">Ви не можете завантажити відео</string>
+  <!--Cancel video download-->
+  <string name="cancel_download">Відміна завантаження</string>
+  <!--My Downloads-->
+  <!--Button action label to view an item-->
+  <string name="view_button_text">Показати</string>
+  <!--Error text when downloading an item fails-->
+  <string name="download_failed_text">Помилка при завантаженні</string>
+  <!--Alert dialog title to confirm download of a large quantity of data-->
+  <string name="download_exceed_title">Велике завантаження</string>
+  <!--Message shown a single video download begins-->
+  <string name="msg_started_one_video_download">Завантаження 1 відео</string>
+  <!--When a video download is about to start and we don't know it's file size yet-->
+  <string name="download_pending">Завантаження очікування...</string>
+  <!--Error shown when video download fails-->
+  <string name="msg_video_not_downloaded">Неможливо завантажити відео</string>
+  <!--Error shown when video download fails-->
+  <string name="msg_video_not_available">Це відео наразі недоступне.\nПеревірте пізніше.</string>
+  <!--Error shown when video has flag to indicate it is not available for mobile app-->
+  <string name="video_only_on_web_label">На даний момент відео доступне лише на сайті. Натисніть, щоб переглянути на сайті</string>
+  <!--Message to indicate the it is not available for mobile app-->
+  <string name="video_only_on_web_short">Дане відео поки не доступне з мобільного</string>
+  <!--Alert dialog title when login fails-->
+  <string name="login_error">Помилка входу</string>
+  <!--Alert dialog title when login fails due to lack of Internet-->
+  <string name="no_connectivity">Помилка з\'єднання</string>
+  <!--Wifi New Message-->
+  <!--Toggle to allow downloads using cellular data-->
+  <string name="allow">Дозволити</string>
+  <!--Toggle to disallow downloads using cellular data-->
+  <string name="do_not_allow">Заборонити</string>
+  <!--Player Settings-->
+  <!--Label for closed captions in video player-->
+  <string name="lbl_closed_caption">Субтитри</string>
+  <!--Label for no closed captions selected-->
+  <string name="lbl_cc_cancel">Немає</string>
+  <!--Accessibility Label for Video Player-->
+  <string name="video_player">Відеоплеєр</string>
+  <!--Accessibility Label for View on Web button on Video Player top bar-->
+  <string name="video_player_view_on_web">Показати на сайті</string>
+  <!--Accessibility Label for Play button of Video Player-->
+  <string name="video_player_play">Грати</string>
+  <!--Accessibility Label for Pause button of Video Player-->
+  <string name="video_player_next">Далі</string>
+  <!--Accessibility Label for Previous button of Video Player-->
+  <string name="video_player_previous">Назад</string>
+  <!--Accessibility Label for Pause button of Video Player-->
+  <string name="video_player_pause">Пауза</string>
+  <!--Accessibility Label for Rewind button on Video Player bottom bar-->
+  <string name="video_player_rewind">Відмотати 30 секунд</string>
+  <!--Accessibility Label for Settings button on Video Player bottom bar-->
+  <string name="video_player_settings">Налаштування</string>
+  <!--Accessibility Label for Entering Fullscreen button on Video Player bottom bar-->
+  <string name="video_player_enter_fullscreen">Повноекранний режим</string>
+  <!--Accessibility Label for Exiting Fullscreen button on Video Player bottom bar-->
+  <string name="video_player_exit_fullscreen">Вийти з повноекранного режиму</string>
+  <!--Button label to bring up course finder-->
+  <string name="find_course_text">Шукаєте нових пригод?</string>
+  <!--Button label to bring up course finder-->
+  <string name="find_course_btn_text">Знайти курс, який можна пройти на мобільному пристрої</string>
+  <!--Message between sign in button and social login buttons-->
+  <string name="or_sign_in_with">Або увійдіть за допомогою</string>
+  <!--Facebook login method-->
+  <string name="facebook_text">Facebook</string>
+  <!--Google login method-->
+  <string name="google_text">Google</string>
+  <!--Message on course list-->
+  <string name="course_not_listed_text">Не можете підібрати собі курс?</string>
+  <!--Accessible content description of course not listed button on Course list screen-->
+  <string name="course_not_listed_btn">Клавіша Не можете підібрати собі курс?</string>
+  <!--Title of find course screen-->
+  <string name="find_courses_title">Знайти курси</string>
+  <!--Message shown when attempting to find courses with no Internet connection-->
+  <string name="find_courses_offline_text">Ви у оффлайн-режимі \nЩоб знайти курси, під\'єднайтесь до мережі Інтернет.</string>
+  <!--Prompt allowing user to choose email program-->
+  <string name="email_chooser_header">Відправити email за допомогою...</string>
+  <!--Error shown when user attempts to send email, but has no email app-->
+  <string name="email_client_not_present">Не встановлено жодного e-mail-клієнту</string>
+  <!--Search for a course prompt-->
+  <string name="search_for_courses">Я хочу дізнатися про...</string>
+  <!--Landing Activity text-->
+  <!--Prompt leading user to sign in screen-->
+  <string name="already_have_an_account">Вже є аккаунт? Увійдіть</string>
+  <!--Prompt leading user to create account screen-->
+  <string name="sign_up_and_learn">Зареєструйтесь та почніть навчанні</string>
+  <!--In Register screen-->
+  <string name="register_with">Зареєструватися за допомогою</string>
+  <string name="or_register_with_email">або зареєструватися через email</string>
+  <!--New Logistration Launch screen text-->
+  <!--Button leading user to create account screen-->
+  <string name="launch_register">Зареєструватися</string>
+  <!--Button leading user to Find Courses screen from the launch screen-->
+  <string name="launch_discover_courses">Знайти курси</string>
+  <!--Button leading user to Find Courses screen from the launch screen-->
+  <string name="launch_explore_subjects">Знайти предмети</string>
+  <!--Registration Screen-->
+  <!--Create account agreement. Followed by list of agreement names like "End User License Agreement"-->
+  <string name="by_creating_account">Створюючи аккаунт, Ви погоджуєтеся з</string>
+  <!--Button text allowing user to show hidden optional registration fields-->
+  <string name="show_optional_text">Показати необов\'язкові поля</string>
+  <!--Button text allowing user to hide visible optional registration fields-->
+  <string name="hide_optional_text">Сховати необов\'язкові поля</string>
+  <!--Button text allowing user create an account-->
+  <string name="create_account_text">Створити мій аккаунт</string>
+  <!--Accessible content description of create account button on Registration screen-->
+  <string name="create_account_btn">Клавіша Створити мій аккаунт</string>
+  <!--Text shown while waiting for registration request-->
+  <string name="creating_account_text">Створення аккаунту...</string>
+  <!--Registration screen title-->
+  <string name="register_title">Реєстрація</string>
+  <!--Text for successful registration with social token-->
+  <string name="sign_up_with_facebook_ok">Ви успішно увійшли через Facebook.</string>
+  <string name="sign_up_with_google_ok">Ви успішно увійшли через Google.</string>
+  <string name="sign_up_with_social_ok">Нам треба ще трішечки інформації перед тим, як Ви почнете навчання з {platform_name}.</string>
+  <!--Continue registration after social login-->
+  <string name="complete_registration">Завершити Вашу реєстрацію</string>
+  <!--Message shown when enrolling in a course fails-->
+  <string name="enrollment_failure">Ми не можемо підписати Вас на цей курс у даний момент.</string>
+  <!--Alert dialog button allowing user to repeat their attempted action-->
+  <string name="try_again">Спробувати ще раз</string>
+  <!--Registration error-->
+  <string name="registration_error_title">Помилка реєстрації</string>
+  <string name="registration_error_message">Оновити відмічені поля та спробувати знову</string>
+  <!--data charges may apply dialog text-->
+  <!--Alert dialog title shown for users whose in app data is zero rated, when they follow a link outside the app-->
+  <string name="open_external_url_title">Може бути стягнута плата за передачу інформації</string>
+  <!--Alert dialog content shown for users whose in app data is zero rated, when they follow a link outside the app-->
+  <string name="open_external_url_desc">Це посилання буде відкрито у браузері, що може викликати витрати на передачу інформації.</string>
+  <string name="android">Android</string>
+  <!--Email subject line when user attempts to submit feedback about the app-->
+  <string name="email_subject">Відгук користувача</string>
+  <!--Submit Feedback app version text-->
+  <string name="app_version">Версія додадтка:</string>
+  <!--Submit Feedback android version text-->
+  <string name="android_os_version">Android OS:</string>
+  <!--Submit Feedback android model text-->
+  <string name="android_device_model">Модель пристрою:</string>
+  <!--Submit Feedback feedback text-->
+  <string name="insert_feedback">Зворотній зв\'язок:</string>
+  <!--Message indicating num of video deleted. {video_count} is a number of videos deleted, like "3".-->
+  <!--Notification related-->
+  <!--toggle between subscribe and unsubscribe to course announcement-->
+  <string name="notification_toggle">Дозволити сповіщення</string>
+  <!--Placeholder title for course content with no title-->
+  <string name="untitled_block">Без назви</string>
+  <!--Discussion/Forum-->
+  <string name="forum_no_results_for_search_query">По запиту “{search_query}” нічого не знайдено. Спробуйте інше словосполучення для пошуку або оберіть категорію обговорення для пошуку. </string>
+  <string name="forum_no_results_for_all_posts">Немає публікацій в обговоренні цього курсу.</string>
+  <string name="forum_no_results_for_following">Ви не підписані на жодну з публікацій.</string>
+  <string name="forum_no_results_for_filtered_following">Фільтр результатів не включає жодної публікації, що відслідковуються.</string>
+  <string name="forum_no_results_in_category">Немає публікацій в категорії, що обговорюється</string>
+  <string name="forum_no_results_with_filter">Спробуйте очистити Ваш фільтр публікацій.</string>
+  <string name="forum_post_i_am_following">Публікації, за якими Я слідкую</string>
+  <string name="forum_follow">Слідкувати</string>
+  <string name="forum_unfollow">Не слідкувати</string>
+  <!--User Profiles-->
+  <!--Window title for the user profile screen-->
+  <string name="profile_title">Профіль</string>
+  <!--The accessibility description for the username section-->
+  <string name="profile_username_description">Ім\'я: {username}</string>
+  <!--The accessibility description for the language section-->
+  <string name="profile_language_description">Мова: {language}</string>
+  <!--The accessibility description for the location section-->
+  <string name="profile_location_description">Місцезнаходження: {location}</string>
+  <!--The accessibility description for the "About Me" section-->
+  <string name="profile_about_me_description">Про мене: {about_me}</string>
+  <!--Label for toolbar icon that launches the edit profile screen for the current user-->
+  <string name="profile_toolbar_edit_button">Редагувати</string>
+  <!--Shown when viewing your own profile and you are not sharing a full profile-->
+  <string name="profile_sharing_limited_by_you">Доступ до інформації Вашого профілю обмежено</string>
+  <!--Shown when viewing another user's profile and that user is not sharing a full profile-->
+  <string name="profile_sharing_limited_by_other_user">Доступ до інформації профілю особи обмежено</string>
+  <!--Shown when viewing your own profile until you have confirmed you are over the age of consent (13 years old)-->
+  <string name="profile_consent_needed_explanation">Ваш вік має бути більше 13 років, щоб відкрити доступ до інформації профілю</string>
+  <!--Shown as button below the explanation for age of consent; it launches the edit profile screen-->
+  <string name="profile_consent_needed_edit_button">Налаштування аккаунту</string>
+  <!--Shown when viewing your own incomplete profile-->
+  <string name="profile_incomplete_explanation">Наче Ваш профіль ще не заповнений. Почнемо.</string>
+  <!--Shown as button below the explanation for incomplete profile; it launches the edit profile screen-->
+  <string name="profile_incomplete_edit_button">Почати</string>
+  <!--This text is shown in place of the "About Me" text if the user has not filled in their "About Me"-->
+  <string name="profile_incomplete_about_me">Відсутня інформація \"Про мене\"</string>
+  <!--Window title for edit profile screen-->
+  <string name="edit_user_profile_title">Редагувати профіль</string>
+  <!--How most profile fields are formatted when viewing the edit screen-->
+  <string name="edit_user_profile_field">{label}: {value}</string>
+  <!--Default placeholder if a profile field is blank-->
+  <string name="edit_user_profile_field_placeholder">Обрати</string>
+  <!--Button that saves changes to a profile text field-->
+  <string name="edit_user_profile_textarea_submit_button">Прийняти</string>
+  <!--An option that will set the user profile's primary language to the language of their device's configured locale-->
+  <string name="edit_user_profile_current_language">Поточна мова: {current_language}</string>
+  <!--An option that will set the user profile's location to the country of their device's configured locale-->
+  <string name="edit_user_profile_current_location">Поточне місцезнаходження: {current_location}</string>
+  <!--Button label that will open gallery or camera for choosing new profile photo-->
+  <string name="edit_user_profile_change_photo">Змінити</string>
+  <!--Content Description for change photo button-->
+  <string name="edit_user_profile_change_photo_description">Змінити зображення профілю</string>
+  <!--Button that will open a camera for taking a new profile photo-->
+  <string name="edit_user_profile_take_photo">Зробити фото</string>
+  <!--Button that will open photo gallery for choosing a new profile photo-->
+  <string name="edit_user_profile_choose_photo">Обрати фото</string>
+  <!--Button that will open a camera for taking a new profile photo-->
+  <string name="edit_user_profile_remove_photo">Видалити фото</string>
+  <!--Title when cropping newly selected profile photo-->
+  <string name="edit_user_profile_photo_crop_title">Обрізати та змінити розмір</string>
+  <!--Button that will exit the crop tool without saving the image-->
+  <string name="edit_user_profile_photo_crop_cancel">Відмінити</string>
+  <!--Button that will confirm the crop region and continue to upload the cropped photo-->
+  <string name="edit_user_profile_photo_crop_save">Обрати</string>
+  <!--Tab title for section of profile that displays a user's bio-->
+  <string name="profile_tab_bio">Інформація</string>
+  <!--Tab title for section of profile that lists a user's accomplishments-->
+  <string name="profile_tab_accomplishment">Досягнення</string>
+  <!--Button that will initiate sharing one of a user's accomplishments-->
+  <string name="share_accomplishment_button">Поділитися досягненнями</string>
+  <!--Text that pre-populates your post/email/SMS when sharing certificate-->
+  <string name="share_accomplishment_message">Я отримав відзнаку на {platform_name}! Перевірте: {badge_url}</string>
+</resources>

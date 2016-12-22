@@ -48,7 +48,7 @@
                             android:layout_height="wrap_content"
                             android:layout_centerInParent="true"
                             android:contentDescription="@string/phonetic_app_name"
-                            android:src="@drawable/login_screen_logo" />
+                            android:src="@drawable/prometeus_logo_colored_black" />
                     </RelativeLayout>
 
                     <LinearLayout
