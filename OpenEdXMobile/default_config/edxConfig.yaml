@@ -1,0 +1,19 @@
+API_HOST_URL: 'https://courses.edx.org' # localhost is 10.0.2.2 in Android
+ENVIRONMENT_DISPLAY_NAME: 'Edx'
+PLATFORM_NAME: 'edX'
+PLATFORM_DESTINATION_NAME: 'edx.org'
+FEEDBACK_EMAIL_ADDRESS: 'support@example.com'
+COURSE_ENROLLMENT : {
+  TYPE: 'webview',
+  WEBVIEW: {
+    COURSE_SEARCH_URL: "https://webview.edx.org/course?type=mobile",
+    COURSE_INFO_URL_TEMPLATE: "https://webview.edx.org/course/{path_id}",
+    SEARCH_BAR_ENABLED: true
+  }
+}
+USER_PROFILES_ENABLED: true
+DISCUSSIONS_ENABLED: true
+CERTIFICATES_ENABLED: true
+NEW_LOGISTRATION_ENABLED: true
+BADGES_ENABLED: false
+OAUTH_CLIENT_ID: 'wGSpSAiKsam8CgBpYvClGBvPVJoLdgni6OpQnjR2'
