@@ -1,5 +1,5 @@
 API_HOST_URL: 'http://prometheus-test-server.cloudapp.net' # localhost is 10.0.2.2 in Android
-ENVIRONMENT_DISPLAY_NAME: 'Localhost'
+ENVIRONMENT_DISPLAY_NAME: 'Test Server'
 PLATFORM_NAME: 'Prometheus'
 PLATFORM_DESTINATION_NAME: 'prometheus-test-server.cloudapp.net;'
 FEEDBACK_EMAIL_ADDRESS: 'support@example.com'
