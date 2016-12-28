@@ -74,10 +74,8 @@ public abstract class MainApplication extends MultiDexApplication {
         injector.injectMembers(this);
 
         // initialize Fabric
-        if (config.getFabricConfig().isEnabled() && !BuildConfig.DEBUG) {
-            Fabric.with(this, new CrashlyticsCore(), new Answers());
-            EventBus.getDefault().register(new CrashlyticsCrashReportObserver());
-        }
+        Fabric.with(this, new CrashlyticsCore(), new Answers());
+        EventBus.getDefault().register(new CrashlyticsCrashReportObserver());
 
         // initialize NewRelic with crash reporting disabled
         if (config.getNewRelicConfig().isEnabled()) {
