@@ -10,16 +10,16 @@ import com.google.inject.Inject;
 
 import org.edx.mobile.R;
 import org.edx.mobile.base.BaseFragmentActivity;
-import org.edx.mobile.http.IApi;
+import org.edx.mobile.course.CourseAPI;
 import org.edx.mobile.interfaces.NetworkObserver;
 import org.edx.mobile.model.api.EnrolledCoursesResponse;
-import org.edx.mobile.module.analytics.ISegment;
+import org.edx.mobile.module.analytics.Analytics;
 
 
 public class CourseAnnouncementsActivity extends BaseFragmentActivity {
 
     @Inject
-    IApi api;
+    CourseAPI api;
 
     private CourseCombinedInfoFragment fragment;
     private EnrolledCoursesResponse courseData;
@@ -46,8 +46,8 @@ public class CourseAnnouncementsActivity extends BaseFragmentActivity {
         //check courseData again, it may be fetched from local cache
         if (courseData != null) {
             activityTitle = courseData.getCourse().getName();
-            environment.getSegment().trackScreenView(
-                    ISegment.Screens.COURSE_ANNOUNCEMENTS,
+            environment.getAnalyticsRegistry().trackScreenView(
+                    Analytics.Screens.COURSE_ANNOUNCEMENTS,
                     courseData.getCourse().getId(),
                     null);
         } else {

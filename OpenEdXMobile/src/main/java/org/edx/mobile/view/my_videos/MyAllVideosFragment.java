@@ -14,7 +14,7 @@ import org.edx.mobile.base.BaseFragment;
 import org.edx.mobile.core.IEdxEnvironment;
 import org.edx.mobile.logger.Logger;
 import org.edx.mobile.model.api.EnrolledCoursesResponse;
-import org.edx.mobile.module.analytics.ISegment;
+import org.edx.mobile.module.analytics.Analytics;
 import org.edx.mobile.module.storage.DownloadCompletedEvent;
 import org.edx.mobile.module.storage.DownloadedVideoDeletedEvent;
 import org.edx.mobile.task.GetAllDownloadedVideosTask;
@@ -27,7 +27,7 @@ import java.util.List;
 
 import de.greenrobot.event.EventBus;
 
-public class MyAllVideosFragment extends BaseFragment {
+public class MyAllVideosFragment extends BaseFragment implements Analytics.OnEventListener {
 
     private MyAllVideoCourseAdapter myCoursesAdaptor;
     protected final Logger logger = new Logger(getClass().getName());
@@ -39,8 +39,10 @@ public class MyAllVideosFragment extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        environment.getSegment().trackScreenView(ISegment.Screens.MY_VIDEOS_ALL);
         EventBus.getDefault().register(this);
+        if (getUserVisibleHint()) {
+            fireScreenEvent();
+        }
     }
 
     @Override
@@ -121,5 +123,10 @@ public class MyAllVideosFragment extends BaseFragment {
     }
     public void onEventMainThread(DownloadCompletedEvent e) {
         addMyAllVideosData();
+    }
+
+    @Override
+    public void fireScreenEvent() {
+        environment.getAnalyticsRegistry().trackScreenView(Analytics.Screens.MY_VIDEOS_ALL);
     }
 }

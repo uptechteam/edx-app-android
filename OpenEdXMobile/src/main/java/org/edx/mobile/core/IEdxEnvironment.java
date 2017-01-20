@@ -1,14 +1,13 @@
 package org.edx.mobile.core;
 
 
-import org.edx.mobile.module.analytics.ISegment;
+import org.edx.mobile.module.analytics.AnalyticsRegistry;
 import org.edx.mobile.module.db.IDatabase;
 import org.edx.mobile.module.download.IDownloadManager;
 import org.edx.mobile.module.notification.NotificationDelegate;
 import org.edx.mobile.module.prefs.LoginPrefs;
 import org.edx.mobile.module.prefs.UserPrefs;
 import org.edx.mobile.module.storage.IStorage;
-import org.edx.mobile.services.ServiceManager;
 import org.edx.mobile.util.Config;
 import org.edx.mobile.view.Router;
 
@@ -27,13 +26,11 @@ public interface IEdxEnvironment {
 
     LoginPrefs getLoginPrefs();
 
-    ISegment getSegment();
+    AnalyticsRegistry getAnalyticsRegistry();
 
     NotificationDelegate getNotificationDelegate();
 
     Router getRouter();
 
     Config getConfig();
-
-    ServiceManager getServiceManager();
 }

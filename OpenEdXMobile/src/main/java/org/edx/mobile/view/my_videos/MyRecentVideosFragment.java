@@ -21,13 +21,14 @@ import com.google.inject.Inject;
 import org.edx.mobile.R;
 import org.edx.mobile.base.BaseFragment;
 import org.edx.mobile.core.IEdxEnvironment;
+import org.edx.mobile.course.CourseAPI;
 import org.edx.mobile.interfaces.NetworkSubject;
 import org.edx.mobile.interfaces.SectionItemInterface;
 import org.edx.mobile.logger.Logger;
 import org.edx.mobile.model.api.TranscriptModel;
 import org.edx.mobile.model.api.VideoResponseModel;
 import org.edx.mobile.model.db.DownloadEntry;
-import org.edx.mobile.module.analytics.ISegment;
+import org.edx.mobile.module.analytics.Analytics;
 import org.edx.mobile.module.db.DataCallback;
 import org.edx.mobile.module.storage.DownloadCompletedEvent;
 import org.edx.mobile.module.storage.DownloadedVideoDeletedEvent;
@@ -51,7 +52,8 @@ import java.util.Map;
 
 import de.greenrobot.event.EventBus;
 
-public class MyRecentVideosFragment extends BaseFragment implements IPlayerEventCallback {
+public class MyRecentVideosFragment extends BaseFragment
+        implements IPlayerEventCallback, Analytics.OnEventListener {
 
     private MyRecentVideoAdapter adapter;
     private ListView videoListView;
@@ -70,12 +72,17 @@ public class MyRecentVideosFragment extends BaseFragment implements IPlayerEvent
     @Inject
     protected IEdxEnvironment environment;
 
+    @Inject
+    private CourseAPI courseApi;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        environment.getSegment().trackScreenView(ISegment.Screens.MY_VIDEOS_RECENT);
         setHasOptionsMenu(!isLandscape());
         EventBus.getDefault().register(this);
+        if (getUserVisibleHint()) {
+            fireScreenEvent();
+        }
     }
 
     @Override
@@ -278,7 +285,7 @@ public class MyRecentVideosFragment extends BaseFragment implements IPlayerEvent
 
         VideoResponseModel vrm;
         try {
-            vrm = environment.getServiceManager().getVideoById(videoModel.eid, videoModel.videoId);
+            vrm = courseApi.getVideoById(videoModel.eid, videoModel.videoId);
         } catch (Exception e) {
             logger.error(e);
             return;
@@ -292,7 +299,7 @@ public class MyRecentVideosFragment extends BaseFragment implements IPlayerEvent
 
         TranscriptModel transcript = null;
         try {
-            transcript = environment.getServiceManager().getTranscriptsOfVideo(videoModel.eid, videoModel.videoId);
+            transcript = courseApi.getTranscriptsOfVideo(videoModel.eid, videoModel.videoId);
         } catch (Exception e) {
             logger.error(e);
         }
@@ -659,6 +666,11 @@ public class MyRecentVideosFragment extends BaseFragment implements IPlayerEvent
             return new PreviousClickListener();
         }
         return null;
+    }
+
+    @Override
+    public void fireScreenEvent() {
+        environment.getAnalyticsRegistry().trackScreenView(Analytics.Screens.MY_VIDEOS_RECENT);
     }
 
     private class NextClickListener implements OnClickListener {
