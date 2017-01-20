@@ -18,7 +18,7 @@ import org.edx.mobile.databinding.FragmentMyCoursesListBinding;
 import org.edx.mobile.databinding.PanelFindCourseBinding;
 import org.edx.mobile.event.EnrolledInCourseEvent;
 import org.edx.mobile.exception.AuthException;
-import org.edx.mobile.http.HttpResponseStatusException;
+import org.edx.mobile.http.HttpStatusException;
 import org.edx.mobile.http.HttpStatus;
 import org.edx.mobile.interfaces.NetworkObserver;
 import org.edx.mobile.interfaces.NetworkSubject;
@@ -26,7 +26,7 @@ import org.edx.mobile.loader.AsyncTaskResult;
 import org.edx.mobile.loader.CoursesAsyncLoader;
 import org.edx.mobile.logger.Logger;
 import org.edx.mobile.model.api.EnrolledCoursesResponse;
-import org.edx.mobile.module.analytics.ISegment;
+import org.edx.mobile.module.analytics.Analytics;
 import org.edx.mobile.module.prefs.LoginPrefs;
 import org.edx.mobile.task.RestoreVideosCacheDataTask;
 import org.edx.mobile.util.NetworkUtil;
@@ -69,7 +69,7 @@ public class MyCoursesListFragment extends BaseFragment implements NetworkObserv
                 environment.getRouter().showCourseDashboardTabs(getActivity(), environment.getConfig(), model, true);
             }
         };
-        environment.getSegment().trackScreenView(ISegment.Screens.MY_COURSES);
+        environment.getAnalyticsRegistry().trackScreenView(Analytics.Screens.MY_COURSES);
         EventBus.getDefault().register(this);
 
         // Restore cache of the courses for which the user has downloaded any videos
@@ -127,11 +127,11 @@ public class MyCoursesListFragment extends BaseFragment implements NetworkObserv
             if (result.getEx() instanceof AuthException) {
                 loginPrefs.clear();
                 getActivity().finish();
-            } else if (result.getEx() instanceof HttpResponseStatusException &&
-                    ((HttpResponseStatusException) result.getEx()).getStatusCode() == HttpStatus.UNAUTHORIZED) {
+            } else if (result.getEx() instanceof HttpStatusException &&
+                    ((HttpStatusException) result.getEx()).getStatusCode() == HttpStatus.UNAUTHORIZED) {
                 environment.getRouter().forceLogout(
                         getContext(),
-                        environment.getSegment(),
+                        environment.getAnalyticsRegistry(),
                         environment.getNotificationDelegate());
             } else {
                 logger.error(result.getEx());
@@ -250,7 +250,7 @@ public class MyCoursesListFragment extends BaseFragment implements NetworkObserv
         footer.courseBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                environment.getSegment().trackUserFindsCourses();
+                environment.getAnalyticsRegistry().trackUserFindsCourses();
                 environment.getRouter().showFindCourses(getActivity());
             }
         });

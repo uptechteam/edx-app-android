@@ -198,14 +198,6 @@ public class PrefManager {
             super(context, Pref.USER_PREF);
         }
 
-        public long getLastCourseStructureFetch(String courseId) {
-            return getLong(Key.LAST_COURSE_STRUCTURE_FETCH + "_" + courseId);
-        }
-
-        public void setLastCourseStructureFetch(String courseId, long timestamp) {
-            super.put(Key.LAST_COURSE_STRUCTURE_FETCH + "_" + courseId, timestamp);
-        }
-
         public boolean isVideosCacheRestored() {
             return getBoolean(Key.VIDEOS_CACHE_RESTORED, false);
         }
@@ -246,7 +238,7 @@ public class PrefManager {
         public static final String DOWNLOAD_ONLY_ON_WIFI = "download_only_on_wifi";
         public static final String DOWNLOAD_OFF_WIFI_SHOW_DIALOG_FLAG = "download_off_wifi_dialog_flag";
         public static final String TRANSCRIPT_LANGUAGE = "transcript_language";
-        public static final String SEGMENT_KEY_BACKEND = "segment_backend";
+        public static final String ANALYTICS_KEY_BACKEND = "segment_backend";
         public static final String SPEED_TEST_KBPS = "speed_test_kbps";
         public static final String APP_VERSION_NAME = "app_version_name";
         public static final String APP_VERSION_CODE = "app_version_code";
@@ -255,7 +247,6 @@ public class PrefManager {
         public static final String AppNotificationPushHash = "AppNotificationPushHash";
         public static final String AppUpgradeNeedSyncWithParse = "AppUpgradeNeedSyncWithParse";
         public static final String AppSettingNeedSyncWithParse = "AppSettingNeedSyncWithParse";
-        public static final String LAST_COURSE_STRUCTURE_FETCH = "LastCourseStructureFetch";
         /**
          * For downloaded videos to appear in order on the My Videos screen, we need
          * to have the videos' courses data cached. This is the key to a persistent

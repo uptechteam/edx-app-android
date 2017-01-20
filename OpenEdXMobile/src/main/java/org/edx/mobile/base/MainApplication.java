@@ -9,7 +9,6 @@ import android.net.wifi.WifiManager;
 import android.support.annotation.NonNull;
 import android.support.multidex.MultiDexApplication;
 
-import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.core.CrashlyticsCore;
 import com.facebook.stetho.Stetho;
 import com.google.inject.Injector;
@@ -22,7 +21,11 @@ import org.edx.mobile.BuildConfig;
 import org.edx.mobile.R;
 import org.edx.mobile.core.EdxDefaultModule;
 import org.edx.mobile.core.IEdxEnvironment;
+import org.edx.mobile.event.NewRelicEvent;
 import org.edx.mobile.logger.Logger;
+import org.edx.mobile.module.analytics.AnalyticsRegistry;
+import org.edx.mobile.module.analytics.FirebaseAnalytics;
+import org.edx.mobile.module.analytics.SegmentAnalytics;
 import org.edx.mobile.module.prefs.PrefManager;
 import org.edx.mobile.module.storage.IStorage;
 import org.edx.mobile.receivers.NetworkConnectivityReceiver;
@@ -41,9 +44,6 @@ import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
  */
 public abstract class MainApplication extends MultiDexApplication {
 
-    //FIXME - temporary solution
-    public static final boolean RETROFIT_ENABLED = false;
-
     protected final Logger logger = new Logger(getClass().getName());
 
     public static MainApplication application;
@@ -56,6 +56,9 @@ public abstract class MainApplication extends MultiDexApplication {
 
     @Inject
     protected Config config;
+
+    @Inject
+    protected AnalyticsRegistry analyticsRegistry;
 
     @Override
     public void onCreate() {
@@ -76,8 +79,15 @@ public abstract class MainApplication extends MultiDexApplication {
 
         // initialize Fabric
         if (config.getFabricConfig().isEnabled() && !BuildConfig.DEBUG) {
-            Fabric.with(this, new CrashlyticsCore(), new Answers());
-            EventBus.getDefault().register(new CrashlyticsCrashReportObserver());
+            Fabric.with(this, config.getFabricConfig().getKitsConfig().getEnabledKits());
+
+            if (config.getFabricConfig().getKitsConfig().isCrashlyticsEnabled())    {
+                EventBus.getDefault().register(new CrashlyticsCrashReportObserver());
+            }
+        }
+
+        if (config.getNewRelicConfig().isEnabled()) {
+            EventBus.getDefault().register(new NewRelicObserver());
         }
 
         // initialize NewRelic with crash reporting disabled
@@ -86,6 +96,16 @@ public abstract class MainApplication extends MultiDexApplication {
             NewRelic.withApplicationToken(config.getNewRelicConfig().getNewRelicKey())
                     .withCrashReportingEnabled(false)
                     .start(this);
+        }
+
+        // Add Segment as an analytics provider if enabled in the config
+        if (config.getSegmentConfig().isEnabled())  {
+            analyticsRegistry.addAnalyticsProvider(injector.getInstance(SegmentAnalytics.class));
+        }
+
+        // Add Firebase as an analytics provider if enabled in the config
+        if (config.isFirebaseEnabled())  {
+            analyticsRegistry.addAnalyticsProvider(injector.getInstance(FirebaseAnalytics.class));
         }
 
         registerReceiver(new NetworkConnectivityReceiver(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
@@ -131,6 +151,13 @@ public abstract class MainApplication extends MultiDexApplication {
         @SuppressWarnings("unused")
         public void onEventMainThread(Logger.CrashReportEvent e) {
             CrashlyticsCore.getInstance().logException(e.getError());
+        }
+    }
+
+    public static class NewRelicObserver {
+        @SuppressWarnings("unused")
+        public void onEventMainThread(NewRelicEvent e) {
+            NewRelic.setInteractionName("Display " + e.getScreenName());
         }
     }
 

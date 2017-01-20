@@ -9,12 +9,12 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 import org.edx.mobile.exception.AuthException;
-import org.edx.mobile.http.ApiConstants;
-import org.edx.mobile.http.HttpResponseStatusException;
+import org.edx.mobile.http.constants.ApiConstants;
+import org.edx.mobile.http.HttpStatusException;
 import org.edx.mobile.http.HttpStatus;
 import org.edx.mobile.model.api.FormFieldMessageBody;
 import org.edx.mobile.model.api.ProfileModel;
-import org.edx.mobile.module.analytics.ISegment;
+import org.edx.mobile.module.analytics.AnalyticsRegistry;
 import org.edx.mobile.module.notification.NotificationDelegate;
 import org.edx.mobile.module.prefs.LoginPrefs;
 import org.edx.mobile.util.Config;
@@ -29,6 +29,8 @@ import java.util.Map;
 import okhttp3.ResponseBody;
 import retrofit2.Response;
 
+import static org.edx.mobile.http.util.CallUtil.executeStrict;
+
 @Singleton
 public class LoginAPI {
 
@@ -42,7 +44,7 @@ public class LoginAPI {
     private final LoginPrefs loginPrefs;
 
     @NonNull
-    private final ISegment segment;
+    private final AnalyticsRegistry analyticsRegistry;
 
     @NonNull
     private final NotificationDelegate notificationDelegate;
@@ -57,13 +59,13 @@ public class LoginAPI {
     public LoginAPI(@NonNull LoginService loginService,
                     @NonNull Config config,
                     @NonNull LoginPrefs loginPrefs,
-                    @NonNull ISegment segment,
+                    @NonNull AnalyticsRegistry analyticsRegistry,
                     @NonNull NotificationDelegate notificationDelegate,
                     @NonNull Gson gson) {
         this.loginService = loginService;
         this.config = config;
         this.loginPrefs = loginPrefs;
-        this.segment = segment;
+        this.analyticsRegistry = analyticsRegistry;
         this.notificationDelegate = notificationDelegate;
         this.gson = gson;
     }
@@ -109,7 +111,7 @@ public class LoginAPI {
             throw new AccountNotLinkedException();
         }
         if (!response.isSuccessful()) {
-            throw new HttpResponseStatusException(response.code());
+            throw new HttpStatusException(response);
         }
         final AuthResponse data = response.body();
         if (data.error != null && data.error.equals(Integer.toString(HttpURLConnection.HTTP_UNAUTHORIZED))) {
@@ -131,13 +133,13 @@ public class LoginAPI {
             throw e;
         }
         loginPrefs.setLastAuthenticatedEmail(usernameUsedToLogIn);
-        segment.identifyUser(
+        analyticsRegistry.identifyUser(
                 response.profile.id.toString(),
                 response.profile.email,
                 usernameUsedToLogIn);
         final String backendKey = loginPrefs.getAuthBackendKeyForSegment();
         if (backendKey != null) {
-            segment.trackUserLogin(backendKey);
+            analyticsRegistry.trackUserLogin(backendKey);
         }
         notificationDelegate.resubscribeAll();
         logInEvents.sendData(new LogInEvent());
@@ -194,17 +196,13 @@ public class LoginAPI {
                     // Looks like the response does not contain form validation errors.
                 }
             }
-            throw new HttpResponseStatusException(errorCode);
+            throw new HttpStatusException(response);
         }
     }
 
     @NonNull
     public ProfileModel getProfile() throws Exception {
-        Response<ProfileModel> response = loginService.getProfile().execute();
-        if (!response.isSuccessful()) {
-            throw new HttpResponseStatusException(response.code());
-        }
-        ProfileModel data = response.body();
+        ProfileModel data = executeStrict(loginService.getProfile());
         loginPrefs.storeUserProfile(data);
         return data;
     }

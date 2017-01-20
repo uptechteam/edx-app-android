@@ -63,3 +63,4 @@ gradle.properties
 
 # reports directory
 /artifacts
+/OpenEdXMobile/default_config/edxConfig.yaml
