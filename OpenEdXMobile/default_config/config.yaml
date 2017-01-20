@@ -1,7 +1,7 @@
-API_HOST_URL: 'http://prometheus-test-server.cloudapp.net' # localhost is 10.0.2.2 in Android
-ENVIRONMENT_DISPLAY_NAME: 'Test Server'
+API_HOST_URL: ' https://courses.prometheus.org.ua/' # localhost is 10.0.2.2 in Android
+ENVIRONMENT_DISPLAY_NAME: 'Prod Server'
 PLATFORM_NAME: 'Prometheus'
-PLATFORM_DESTINATION_NAME: 'prometheus-test-server.cloudapp.net;'
+PLATFORM_DESTINATION_NAME: 'prometheus.org.ua'
 FEEDBACK_EMAIL_ADDRESS: 'support@example.com'
 COURSE_ENROLLMENT : {
   TYPE: 'native'
@@ -10,4 +10,4 @@ USER_PROFILES_ENABLED: true
 DISCUSSIONS_ENABLED: true
 CERTIFICATES_ENABLED: true
 NEW_LOGISTRATION_ENABLED: true
-OAUTH_CLIENT_ID: 'e0dda1692c35b0986297'
+OAUTH_CLIENT_ID: '98102d634d933574d018'

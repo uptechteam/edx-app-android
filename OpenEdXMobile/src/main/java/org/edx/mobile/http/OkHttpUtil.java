@@ -4,6 +4,8 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 
+import com.facebook.stetho.okhttp3.StethoInterceptor;
+
 import org.edx.mobile.BuildConfig;
 import org.edx.mobile.R;
 
@@ -47,6 +49,7 @@ public class OkHttpUtil {
     private static OkHttpClient getClient(@NonNull Context context,
                                           boolean isOAuthBased, boolean usesOfflineCache) {
         final OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        builder.addNetworkInterceptor(new StethoInterceptor());
         List<Interceptor> interceptors = builder.interceptors();
         if (usesOfflineCache) {
             final File cacheDirectory = new File(context.getFilesDir(), "http-cache");
@@ -86,6 +89,7 @@ public class OkHttpUtil {
         final List<HttpCookie> cookies = new ArrayList<>();
 
         OkHttpClient.Builder oauthBasedClientBuilder = getOAuthBasedClient(context).newBuilder();
+        oauthBasedClientBuilder.addNetworkInterceptor(new StethoInterceptor());
         oauthBasedClientBuilder.cookieJar(new CookieJar() {
             @Override
             public void saveFromResponse(HttpUrl url, List<Cookie> newCookies) {

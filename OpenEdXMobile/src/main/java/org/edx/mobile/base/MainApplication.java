@@ -11,6 +11,7 @@ import android.support.multidex.MultiDexApplication;
 
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.core.CrashlyticsCore;
+import com.facebook.stetho.Stetho;
 import com.google.inject.Injector;
 import com.google.inject.Module;
 import com.joanzapata.iconify.Iconify;
@@ -110,6 +111,8 @@ public abstract class MainApplication extends MultiDexApplication {
                 .setFontAttrId(R.attr.fontPath)
                 .build()
         );
+
+        Stetho.initializeWithDefaults(this);
     }
 
     private boolean needVersionUpgrade(Context context) {
