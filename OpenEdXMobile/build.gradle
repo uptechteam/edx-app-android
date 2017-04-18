@@ -235,14 +235,14 @@ if (config.get('FIREBASE_ENABLED')?: false) {
 }
 
 android {
-    signingConfigs {
-        releasekey {
-            storeFile file(RELEASE_STORE_FILE)
-            storePassword RELEASE_STORE_PASSWORD
-            keyAlias RELEASE_KEY_ALIAS
-            keyPassword RELEASE_KEY_PASSWORD
-        }
-    }
+//    signingConfigs {
+//        releasekey {
+//            storeFile file(RELEASE_STORE_FILE)
+//            storePassword RELEASE_STORE_PASSWORD
+//            keyAlias RELEASE_KEY_ALIAS
+//            keyPassword RELEASE_KEY_PASSWORD
+//        }
+//    }
 
     compileSdkVersion 23
     buildToolsVersion BUILD_TOOLS_VERSION
@@ -256,7 +256,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "org.edx.mobile"
+        applicationId "org.prometheus.android"
         // minimum version is Android 4.0
         minSdkVersion 14
         targetSdkVersion 21
@@ -352,7 +352,7 @@ android {
     }
 
     lintOptions {
-        abortOnError true
+        abortOnError false
         showAll true
         warning 'TypographyQuotes', 'InvalidPackage'
         error 'StopShip', 'ContentDescription'
@@ -381,7 +381,7 @@ android {
         }
 
         release {
-            signingConfig signingConfigs.releasekey
+//            signingConfig signingConfigs.releasekey
             applicationVariants.all { variant ->
                 variant.outputs.each { output ->
                     project.ext { appName = 'edx' }
