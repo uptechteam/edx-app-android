@@ -172,8 +172,8 @@ dependencies {
     }
 
     //Crashlytics Kit
-    compile('com.crashlytics.sdk.android:crashlytics-core:2.3.8@aar') {
-        transitive = true
+    compile('com.crashlytics.sdk.android:crashlytics:2.6.7@aar') {
+        transitive = true;
     }
 
     //New Relic Integration
@@ -251,9 +251,9 @@ android {
         enabled = true
     }
 
-    dexOptions {
-        javaMaxHeapSize "2g"
-    }
+//    dexOptions {
+//        javaMaxHeapSize "2g"
+//    }
 
     defaultConfig {
         applicationId "org.prometheus.android"
@@ -366,6 +366,7 @@ android {
         }
         dev {
             minSdkVersion 21 // Disables multidex to drastically speed up build: https://developer.android.com/tools/building/multidex.html#dev-build
+            applicationIdSuffix ".dev"
         }
     }
 
