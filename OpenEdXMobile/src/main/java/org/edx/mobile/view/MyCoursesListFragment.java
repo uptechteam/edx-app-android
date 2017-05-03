@@ -32,6 +32,7 @@ import org.edx.mobile.task.RestoreVideosCacheDataTask;
 import org.edx.mobile.util.NetworkUtil;
 import org.edx.mobile.util.ViewAnimationUtil;
 import org.edx.mobile.view.adapters.MyCoursesAdapter;
+import org.edx.mobile.view.dialog.AlertDialogFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -245,7 +246,8 @@ public class MyCoursesListFragment extends BaseFragment implements NetworkObserv
     }
 
     private void addFindCoursesFooter() {
-        final PanelFindCourseBinding footer = DataBindingUtil.inflate(LayoutInflater.from(getActivity()), R.layout.panel_find_course, binding.myCourseList, false);
+        final PanelFindCourseBinding footer = DataBindingUtil.inflate(LayoutInflater.from(getActivity()),
+                R.layout.panel_find_course, binding.myCourseList, false);
         binding.myCourseList.addFooterView(footer.getRoot(), null, false);
         footer.courseBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -254,12 +256,5 @@ public class MyCoursesListFragment extends BaseFragment implements NetworkObserv
                 environment.getRouter().showFindCourses(getActivity());
             }
         });
-        footer.courseNotListedTv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                environment.getRouter().showWebViewActivity((getActivity()), getString(R.string.course_not_listed_file_name), null);
-            }
-        });
     }
-
 }
