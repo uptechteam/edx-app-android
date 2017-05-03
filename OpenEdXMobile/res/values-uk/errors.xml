@@ -80,4 +80,8 @@
   <string name="course_not_started">Цей курс ще не стартував</string>
   <!--Error message shown when a user can't perform an action on e.g. add a post/response/comment in forums-->
   <string name="action_not_completed">Вашу дію не може бути завершено</string>
+  <!--Error dialog message shown when the user try to log in in app with un-supported version-->
+  <string name="app_version_unsupported_login_msg">Ваша версія додатка більше не підтримується. Оновіться до останньої версії для входу у додаток.</string>
+  <!--Error dialog message shown when the user try to register in app with un-supported version-->
+  <string name="app_version_unsupported_register_msg">Ваша версія додатка більше не підтримується. Оновіться до останньої версії для реєстрації.</string>
 </resources>

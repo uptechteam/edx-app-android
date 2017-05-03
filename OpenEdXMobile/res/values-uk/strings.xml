@@ -25,7 +25,7 @@
   <!--Description of button that will open the share course menu-->
   <string name="share_course_button">Поділитися Вашим курсом</string>
   <!--Share menu title-->
-  <string name="share_course_popup_header">Поділитися цим курсом через...</string>
+  <string name="share_course_popup_header">Поділитися цим курсом через…</string>
   <!--Share course-->
   <string name="share_course_message">Я записався на курс на {platform_name}! Переконайтесь:</string>
   <!--Settings Page-->
@@ -41,7 +41,7 @@
   <!--Tab of tab for certicate for finished course-->
   <string name="tab_label_certificate">Сертифікат</string>
   <!--Header for popup list of share targets-->
-  <string name="share_certificate_popup_header">Поділитися Вашим сертифікатом через...</string>
+  <string name="share_certificate_popup_header">Поділитися Вашим сертифікатом через…</string>
   <!--Data Usage Dialog-->
   <!--Alert dialog error message shown when using a feature with a required Internet connection-->
   <string name="need_data">Ця функція потребує активного Інтернет-з\'єднання.</string>
@@ -136,7 +136,7 @@
   <string name="end_user_title">Ліцензійна угода кінцевого користувача</string>
   <!--My Courses-->
   <!--Row of course on dashboard screen-->
-  <string name="courseware_title">Програма навчання</string>
+  <string name="courseware_title">Курс</string>
   <!--Row of course on dashboard screen-->
   <!--NOTE: TODO - not final one-->
   <string name="courseware_subtitle">Відео та завдання</string>
@@ -232,7 +232,17 @@
   <string name="course_discussion_unanswered_title">Невирішене питання</string>
   <!--Label for adding a discussion response-->
   <!--Label for number of discussion responses-->
+  <plurals name="number_responses_or_comments_responses_label">
+    <item quantity="one">%s відповідь</item>
+    <item quantity="few">%s відповідей</item>
+    <item quantity="other">%s відповідей</item>
+  </plurals>
   <!--Label for number of discussion comments-->
+  <plurals name="number_responses_or_comments_comments_label">
+    <item quantity="one">%s коментар</item>
+    <item quantity="few">%s коментарів</item>
+    <item quantity="other">%s коментарів</item>
+  </plurals>
   <!--Label for adding a new comment-->
   <!--Label for indicating that a response is an answer-->
   <string name="discussion_responses_answer">Відповідь</string>
@@ -246,9 +256,15 @@
   <string name="discussion_comment_posted">Ваш коментар було додано.</string>
   <!--Discussion Responses Action Bar-->
   <!--Label to indicate number of votes-->
+  <plurals name="discussion_responses_action_bar_vote_text">
+    <item quantity="one">{quantity} голос</item>
+    <item quantity="few">{quantity} голосів</item>
+    <item quantity="other">{quantity} голосів</item>
+  </plurals>
   <!--Label to indicate discussion response is not marked as inappropriate-->
   <string name="discussion_responses_report_label">Поскаржитися</string>
   <!--Label for discussion response that has been marked as inappropriate-->
+  <string name="discussion_responses_reported_label">Відмінити скаргу</string>
   <!--Title in adding a new comment-->
   <string name="discussion_add_comment_title">Додати коментар</string>
   <!--Title when adding a new comment is disabled-->
@@ -332,7 +348,7 @@
   <!--Message shown a single video download begins-->
   <string name="msg_started_one_video_download">Завантаження 1 відео</string>
   <!--When a video download is about to start and we don't know it's file size yet-->
-  <string name="download_pending">Завантаження очікування...</string>
+  <string name="download_pending">Завантаження очікування…</string>
   <!--Error shown when video download fails-->
   <string name="msg_video_not_downloaded">Неможливо завантажити відео</string>
   <!--Error shown when video download fails-->
@@ -378,27 +394,23 @@
   <!--Button label to bring up course finder-->
   <string name="find_course_text">Шукаєте нових пригод?</string>
   <!--Button label to bring up course finder-->
-  <string name="find_course_btn_text">Знайти курс, який можна пройти на мобільному пристрої</string>
+  <string name="find_course_btn_text">Знайти курси</string>
   <!--Message between sign in button and social login buttons-->
   <string name="or_sign_in_with">Або увійдіть за допомогою</string>
   <!--Facebook login method-->
   <string name="facebook_text">Facebook</string>
   <!--Google login method-->
   <string name="google_text">Google</string>
-  <!--Message on course list-->
-  <string name="course_not_listed_text">Не можете підібрати собі курс?</string>
-  <!--Accessible content description of course not listed button on Course list screen-->
-  <string name="course_not_listed_btn">Клавіша Не можете підібрати собі курс?</string>
   <!--Title of find course screen-->
   <string name="find_courses_title">Знайти курси</string>
   <!--Message shown when attempting to find courses with no Internet connection-->
   <string name="find_courses_offline_text">Ви у оффлайн-режимі \nЩоб знайти курси, під\'єднайтесь до мережі Інтернет.</string>
   <!--Prompt allowing user to choose email program-->
-  <string name="email_chooser_header">Відправити email за допомогою...</string>
+  <string name="email_chooser_header">Відправити email за допомогою…</string>
   <!--Error shown when user attempts to send email, but has no email app-->
   <string name="email_client_not_present">Не встановлено жодного e-mail-клієнту</string>
   <!--Search for a course prompt-->
-  <string name="search_for_courses">Я хочу дізнатися про...</string>
+  <string name="search_for_courses">Я хочу дізнатися про…</string>
   <!--Landing Activity text-->
   <!--Prompt leading user to sign in screen-->
   <string name="already_have_an_account">Вже є аккаунт? Увійдіть</string>
@@ -426,7 +438,7 @@
   <!--Accessible content description of create account button on Registration screen-->
   <string name="create_account_btn">Клавіша Створити мій аккаунт</string>
   <!--Text shown while waiting for registration request-->
-  <string name="creating_account_text">Створення аккаунту...</string>
+  <string name="creating_account_text">Створення аккаунту…</string>
   <!--Registration screen title-->
   <string name="register_title">Реєстрація</string>
   <!--Text for successful registration with social token-->
@@ -450,6 +462,8 @@
   <string name="android">Android</string>
   <!--Email subject line when user attempts to submit feedback about the app-->
   <string name="email_subject">Відгук користувача</string>
+  <!--Email subject line when a user attempts to submit a review using the app review workflow-->
+  <string name="review_email_subject">Відгук користувача</string>
   <!--Submit Feedback app version text-->
   <string name="app_version">Версія додадтка:</string>
   <!--Submit Feedback android version text-->
@@ -459,6 +473,11 @@
   <!--Submit Feedback feedback text-->
   <string name="insert_feedback">Зворотній зв\'язок:</string>
   <!--Message indicating num of video deleted. {video_count} is a number of videos deleted, like "3".-->
+  <plurals name="deleted_video">
+    <item quantity="one">{video_count}  відеозапис видалено</item>
+    <item quantity="few">{video_count}  відеозаписів видалено</item>
+    <item quantity="other">{video_count}  відеозаписів видалено</item>
+  </plurals>
   <!--Notification related-->
   <!--toggle between subscribe and unsubscribe to course announcement-->
   <string name="notification_toggle">Дозволити сповіщення</string>
@@ -537,4 +556,16 @@
   <string name="share_accomplishment_button">Поділитися досягненнями</string>
   <!--Text that pre-populates your post/email/SMS when sharing certificate-->
   <string name="share_accomplishment_message">Я отримав відзнаку на {platform_name}! Перевірте: {badge_url}</string>
+  <!--Question on the app rating dialog-->
+  <string name="rating_dialog_message">Як ви оціните додаток?</string>
+  <!--Dialog title for positive app review-->
+  <string name="rate_app_dialog_title">Оцінить додаток</string>
+  <!--Dialog message for positive app review-->
+  <string name="rate_app_dialog_message">Розкажіть іншим, що ви думаєте про  {platform_name} додаток написавши відгук</string>
+  <!--Dialog title for negative app review-->
+  <string name="feedback_dialog_title">Відправити відгук?</string>
+  <!--Dialog message for negative app review-->
+  <string name="feedback_dialog_message">Допоможіть нам покращітись!</string>
+  <!--accessibility label for rating bar-->
+  <!--accessibility label for rating selection on rating bar-->
 </resources>

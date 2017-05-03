@@ -29,4 +29,14 @@
   <string name="label_close">Закрити</string>
   <!--Alert dialog continue confirmation button-->
   <string name="label_continue">Продовжити</string>
+  <!--Alert dialog submit button-->
+  <string name="label_submit">Відправити</string>
+  <!--Alert dialog send feedback button-->
+  <string name="label_send_feedback">Залишити відгук</string>
+  <!--Alert dialog maybe later button-->
+  <string name="label_maybe_later">Можливо пізніше</string>
+  <!--Alert dialog rate the app button-->
+  <string name="label_rate_the_app">Оцінити додаток</string>
+  <!--Alert dialog and snackbar button for opening an app store to update the app to the latest version-->
+  <string name="label_update">Оновити</string>
 </resources>
