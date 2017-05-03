@@ -152,7 +152,7 @@
 
     <!-- My Courses -->
     <!-- Row of course on dashboard screen -->
-    <string name="courseware_title">Courseware</string>
+    <string name="courseware_title">Course</string>
     <!-- Row of course on dashboard screen -->
     <!-- NOTE: TODO - not final one -->
     <string name="courseware_subtitle">Access videos and assignments</string>
@@ -192,7 +192,7 @@
     <!-- Button for last accessed course section. Will be followed by course name -->
     <string name="last_accessed">Last Accessed</string>
     <!-- Label shown when no courseware content is available -->
-    <string name="no_chapter_text">No courseware is currently available.</string>
+    <string name="no_chapter_text">No course content is currently available.</string>
     <!-- Label shown when user is enrolled in no courses -->
     <string name="no_courses_to_display">It looks like you are not enrolled in any courses yet.</string>
     <!-- Label shown when no announcements are available for a course -->
@@ -429,17 +429,13 @@
     <!-- Button label to bring up course finder -->
     <string name="find_course_text">Looking for a new challenge?</string>
     <!-- Button label to bring up course finder -->
-    <string name="find_course_btn_text">Find a mobile-friendly course</string>
+    <string name="find_course_btn_text">Find a Course</string>
     <!-- Message between sign in button and social login buttons -->
     <string name="or_sign_in_with">Or sign in with</string>
     <!-- Facebook login method -->
     <string name="facebook_text">Facebook</string>
     <!-- Google login method -->
     <string name="google_text">Google</string>
-    <!-- Message on course list -->
-    <string name="course_not_listed_text">Can’t find one of your courses?</string>
-    <!-- Accessible content description of course not listed button on Course list screen -->
-    <string name="course_not_listed_btn">Can’t find one of your courses button</string>
     <!-- Title of find course screen -->
     <string name="find_courses_title">Find Courses</string>
     <!-- Message shown when attempting to find courses with no Internet connection -->
@@ -507,6 +503,8 @@
 
     <!--  Email subject line when user attempts to submit feedback about the app -->
     <string name="email_subject">Customer Feedback</string>
+    <!--  Email subject line when a user attempts to submit a review using the app review workflow -->
+    <string name="review_email_subject">Customer Review</string>
     <!--  Submit Feedback app version text -->
     <string name="app_version">App Version: </string>
     <!--  Submit Feedback android version text -->
@@ -604,5 +602,18 @@
     <string name="share_accomplishment_button">Share your accomplishment</string>
     <!-- Text that pre-populates your post/email/SMS when sharing certificate -->
     <string name="share_accomplishment_message">I just earned a badge on {platform_name}! Check it out: {badge_url}</string>
-
+    <!-- Question on the app rating dialog -->
+    <string name="rating_dialog_message">How would you rate the app?</string>
+    <!-- Dialog title for positive app review -->
+    <string name="rate_app_dialog_title">Rate the app</string>
+    <!-- Dialog message for positive app review -->
+    <string name="rate_app_dialog_message">Tell others what you think of the {platform_name} app by writing a quick review</string>
+    <!-- Dialog title for negative app review -->
+    <string name="feedback_dialog_title">Send Feedback?</string>
+    <!-- Dialog message for negative app review -->
+    <string name="feedback_dialog_message">Help us improve!</string>
+    <!-- accessibility label for rating bar -->
+    <string name="rating_bar">Rating control</string>
+    <!-- accessibility label for rating selection on rating bar -->
+    <string name="rating_bar_selection">{rating} out of {num_of_stars}</string>
 </resources>
