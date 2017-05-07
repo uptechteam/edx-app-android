@@ -3,18 +3,19 @@ package org.edx.mobile.http.provider;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
+import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
 
 import org.edx.mobile.BuildConfig;
 import org.edx.mobile.R;
+import org.edx.mobile.http.authenticator.OauthRefreshTokenAuthenticator;
 import org.edx.mobile.http.interceptor.CustomCacheQueryInterceptor;
 import org.edx.mobile.http.interceptor.JsonMergePatchInterceptor;
 import org.edx.mobile.http.interceptor.NewVersionBroadcastInterceptor;
 import org.edx.mobile.http.interceptor.NoCacheHeaderStrippingInterceptor;
 import org.edx.mobile.http.interceptor.OauthHeaderRequestInterceptor;
-import org.edx.mobile.http.authenticator.OauthRefreshTokenAuthenticator;
 import org.edx.mobile.http.interceptor.StaleIfErrorHandlingInterceptor;
 import org.edx.mobile.http.interceptor.StaleIfErrorInterceptor;
 import org.edx.mobile.http.interceptor.UserAgentInterceptor;
@@ -69,6 +70,7 @@ public interface OkHttpClientProvider extends Provider<OkHttpClient> {
             OkHttpClient client = clients[index];
             if (client == null) {
                 final OkHttpClient.Builder builder = new OkHttpClient.Builder();
+                builder.networkInterceptors().add(new StethoInterceptor());
                 List<Interceptor> interceptors = builder.interceptors();
                 if (usesOfflineCache) {
                     final File cacheDirectory = new File(context.getFilesDir(), "http-cache");
