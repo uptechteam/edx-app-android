@@ -8,6 +8,9 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 
 public class EncodedVideos implements Serializable {
+    @SerializedName("fallback")
+    public VideoInfo fallback;
+
     @SerializedName("mobile_high")
     public VideoInfo mobileHigh;
 
@@ -23,6 +26,8 @@ public class EncodedVideos implements Serializable {
             return mobileLow;
         if (mobileHigh != null && URLUtil.isNetworkUrl(mobileHigh.url))
             return mobileHigh;
+        if (fallback != null && URLUtil.isNetworkUrl(fallback.url))
+            return fallback;
         return null;
     }
 
@@ -40,6 +45,8 @@ public class EncodedVideos implements Serializable {
 
         EncodedVideos that = (EncodedVideos) o;
 
+        if (fallback != null ? !fallback.equals(that.fallback) : that.fallback != null)
+            return false;
         if (mobileHigh != null ? !mobileHigh.equals(that.mobileHigh) : that.mobileHigh != null)
             return false;
         if (mobileLow != null ? !mobileLow.equals(that.mobileLow) : that.mobileLow != null)

@@ -210,12 +210,14 @@ public abstract class DiscussionTextUtils {
         textView.setMovementMethod(LinkMovementMethod.getInstance());
         textView.setText(spannedHtml);
 
-        SpannableString viewText = (SpannableString) textView.getText();
-        for (final URLSpan spanObj : urlSpans) {
-            final int start = spannedHtml.getSpanStart(spanObj);
-            final int end = spannedHtml.getSpanEnd(spanObj);
-            final int flags = spannedHtml.getSpanFlags(spanObj);
-            viewText.setSpan(spanObj, start, end, flags);
+        if (textView.getText() instanceof SpannableString) {
+            SpannableString viewText = (SpannableString) textView.getText();
+            for (final URLSpan spanObj : urlSpans) {
+                final int start = spannedHtml.getSpanStart(spanObj);
+                final int end = spannedHtml.getSpanEnd(spanObj);
+                final int flags = spannedHtml.getSpanFlags(spanObj);
+                viewText.setSpan(spanObj, start, end, flags);
+            }
         }
     }
 }

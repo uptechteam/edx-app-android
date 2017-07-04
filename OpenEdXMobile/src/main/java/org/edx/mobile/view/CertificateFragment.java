@@ -34,6 +34,7 @@ public class CertificateFragment extends BaseFragment {
 
     static public final String TAG = CertificateFragment.class.getCanonicalName();
     static public final String ENROLLMENT = "enrollment";
+    public static final String GOOGLE_DRIVE_VIEWER_TEMPLATE = "http://docs.google.com/gview?embedded=true&url=";
 
     @Inject
     AnalyticsRegistry analyticsRegistry;
@@ -88,6 +89,7 @@ public class CertificateFragment extends BaseFragment {
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_certificate, container, false);
         webview = (WebView) view.findViewById(R.id.webview);
+        webview.getSettings().setJavaScriptEnabled(true);
         final View loadingIndicator = view.findViewById(R.id.loading_indicator);
         final URLInterceptorWebViewClient client = new URLInterceptorWebViewClient(getActivity(), webview);
         client.setPageStatusListener(new URLInterceptorWebViewClient.IPageStatusListener() {
@@ -121,7 +123,7 @@ public class CertificateFragment extends BaseFragment {
         // Clear cookies before loading so that social sharing buttons are not displayed inside web view
         EdxCookieManager.getSharedInstance(getContext()).clearWebWiewCookie();
 
-        webview.loadUrl(courseData.getCertificateURL());
+        webview.loadUrl(GOOGLE_DRIVE_VIEWER_TEMPLATE + courseData.getCertificateURL());
     }
 
     @Override

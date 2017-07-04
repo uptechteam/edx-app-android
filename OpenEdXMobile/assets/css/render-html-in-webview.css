@@ -77,6 +77,10 @@ strong, b {
   font-weight: bold;
 }
 
+img, iframe {
+  max-width : 100%;
+}
+
 .header {
   color: rgb(70, 74, 80);
   font-size:16px;
